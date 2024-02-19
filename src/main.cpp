@@ -4,12 +4,16 @@
 
 #include "globalVariables.h"
 
+#include "graphic/tileCache.h"
+
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
 M5GFX lcd;
 LGFX_Sprite canvas(&lcd); // screen buffer // Global
 
-sprite_struct *tile_cache[n_sprite];
+// Initial Coordinates
+str_pxl_coords curr_gps_idx_coords = {0, 0};
+str_pxl_coords display_center_idx_coords = {0, 0};
 
 void initializeM5Stack()
 {
@@ -65,8 +69,16 @@ void setup()
 
     // Initialize display
     startupScreen();
+
+    // Initialize Tile Cache
+    initTileCache();
+
+    // Load the cache with the tiles.
+    fillTileCache();
+
 }
 
 void loop()
 {
+
 }
