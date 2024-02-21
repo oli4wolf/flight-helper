@@ -6,29 +6,10 @@ const char map_dir_path[] = "/map";
 const char log_file_path[] = "/log.csv";
 const char point_dir_path[] = "/obstacles";
 
-void genPointPath(char *file_path, int z, int tile_x, int tile_y)
-{
-    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d_point.dat", point_dir_path, z,
-             tile_x, tile_y);
-    ESP_LOGD("genPointPath", "Path to lines: %s", file_path);
-}
-
-void genLinePath(char *file_path, int z, int tile_x, int tile_y)
-{
-    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d_line.dat", point_dir_path, z,
-             tile_x, tile_y);
-    ESP_LOGD("genLinePath", "Path to lines: %s", file_path);
-}
-
-void genMapPath(char *file_path, int z, int tile_x, int tile_y)
-{
-    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d.jpeg", map_dir_path, z, tile_x,
-             tile_y);
-}
-
 void loadTile(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {
-    genMapPath(file_path, zoom, tile_x, tile_y);
+    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d.jpeg", map_dir_path, zoom, tile_x,
+             tile_y);
 
     if (SD.exists(file_path))
     {
@@ -53,7 +34,7 @@ void loadTile(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 
 void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int color)
 {
-    // Bruteforce thickness. 
+    // Bruteforce thickness.
     // Each permutation around the end and starting point is drawn. +1, -1.
     sprite->drawLine(x1 - 1, y1 - 1, x2 - 1, y2 - 1, color); //-1,-1
     sprite->drawLine(x1, y1 - 1, x2, y2 - 1, color);         // 0,-1
@@ -70,7 +51,9 @@ void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int 
 
 void loadObstaclesLines(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {
-    genLinePath(file_path, zoom, tile_x, tile_y);
+    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d_line.dat", point_dir_path, zoom,
+             tile_x, tile_y);
+
     if (!SD.exists(file_path))
     {
         return;
@@ -139,7 +122,9 @@ void loadObstaclesPoints(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 
     int point_x, point_y;
 
-    genPointPath(file_path, zoom, tile_x, tile_y);
+    snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d_point.dat", point_dir_path, zoom,
+             tile_x, tile_y);
+
     ESP_LOGD("loadObstaclesPoints", "Path to points: %s", file_path);
     if (SD.exists(file_path))
     {
