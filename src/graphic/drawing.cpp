@@ -26,6 +26,7 @@ void drawGPSInfo()
     uint32_t gps_time = gpsHours * 3600000 + gpsMinutes * 60000 + gpsSeconds * 1000;
     ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
     lcd.startWrite();
+    canvas.setTextSize(2);
     if ((rtc_millis - gps_time) > 5000)
     {
         canvas.setTextColor(TFT_RED, TFT_BLACK);

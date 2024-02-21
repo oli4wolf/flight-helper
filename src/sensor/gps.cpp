@@ -59,8 +59,8 @@ void loopGPSIDX()
   if (gps.location.isUpdated())
   {
     // Update curr_gps_idx_coords with gps data
-    calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lng(),
-                          gps.location.lat(), zoom, tile_size);
+    calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
+                          gps.location.lng(), zoom, tile_size);
     gpsTime = gps.time.value();
     if (!isTimeSet)
     {
