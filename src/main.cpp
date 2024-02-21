@@ -4,12 +4,11 @@
 
 #include "globalVariables.h"
 
+#include "graphic/tileCache.h"
+
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
 M5GFX lcd;
-LGFX_Sprite canvas(&lcd); // screen buffer // Global
-
-sprite_struct *tile_cache[n_sprite];
 
 void initializeM5Stack()
 {
@@ -41,14 +40,14 @@ void initializeSDCard()
 
 void startupScreen()
 {
-    M5.Lcd.fillScreen(TFT_BLACK);
-    M5.Lcd.setCursor(0, 0);
-    M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-    M5.Lcd.setTextSize(4);
-    M5.Lcd.println("M5Stack Swiss Topo");
-    M5.Lcd.println("v0.1");
-    M5.Lcd.println("by @oli4wolf");
-    M5.Lcd.println("2024-01-12 20:54:02");
+    lcd.fillScreen(TFT_BLACK);
+    lcd.setCursor(0, 0);
+    lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+    lcd.setTextSize(2);
+    lcd.println("M5Stack Swiss Topo");
+    lcd.println("v0.1");
+    lcd.println("by @oli4wolf");
+    lcd.println("2024-01-12 20:54:02");
     delay(5000);
 }
 
@@ -65,8 +64,23 @@ void setup()
 
     // Initialize display
     startupScreen();
+
+    // Initialize Canvas
+    initCanvas();
+
+    // Initialize Tile Cache
+    initTileCache();
+
+    // Load the cache with the tiles.
+    fillTileCache(46.95234, 7.45282);
+
+    drawTileCache(tile_cache, curr_gps_pxl_coords);
 }
 
 void loop()
 {
+    lcd.startWrite();
+    canvas.pushSprite(0, 0);
+    lcd.endWrite();
+    delay(5000);
 }

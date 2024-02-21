@@ -20,4 +20,22 @@ struct center_point
   int y;
 };
 
+// Struct Part
+struct str_tile_coords
+{
+    int zoom;
+    int tile_x;
+    int tile_y;
+};
+struct str_pxl_on_tile
+{
+    int pxl_x;
+    int pxl_y;
+};
+struct str_pxl_coords
+{
+    int pxl_x;
+    int pxl_y;
+};
+
 #endif // __COORDSTRUCT_H__

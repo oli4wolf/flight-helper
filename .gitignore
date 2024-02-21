@@ -31,3 +31,7 @@
 *.out
 *.app
 .pio/*
+.vscode/*
+.vscode/c_cpp_properties.json
+.vscode/extensions.json
+.vscode/launch.json
