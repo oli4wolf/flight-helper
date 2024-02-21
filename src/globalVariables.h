@@ -12,3 +12,11 @@ extern str_pxl_coords curr_gps_pxl_coords;
 extern str_pxl_coords display_center_pxl_coords;
 
 extern str_pxl_coords last_drawn_pxl_coords;
+
+// GPS variables
+// By getting out the single values we decouple from the tinygpsplus library.
+extern double gpsSpeed;    // GPS Speed measurement.
+extern uint32_t gpsTime;   // Time of fix in ms.
+extern uint8_t gpsHours;   // Time of fix in ms.
+extern uint8_t gpsMinutes; // Time of fix in ms.
+extern uint8_t gpsSeconds; // Time of fix in ms.

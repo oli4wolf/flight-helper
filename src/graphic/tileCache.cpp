@@ -52,7 +52,11 @@ void fillTileCache(double lat, double lon)
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, lat, lon, zoom, TILE_SIZE);
 
     // Reset to default Zoom.
+    reloadTileCache();
+}
 
+void reloadTileCache()
+{
     str_tile_coords tile_coords;
     calcCoordsPxlToTile(tile_coords, curr_gps_pxl_coords, TILE_SIZE);
     ESP_LOGD("curr_coords", "after calc: x:%d, y: %d", curr_gps_pxl_coords.pxl_x, curr_gps_pxl_coords.pxl_y);

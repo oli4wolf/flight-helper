@@ -6,16 +6,17 @@ TinyGPSPlus gps;
 HardwareSerial ss(2);
 
 // Variables [GPS]
-double gpsSpeed = 0.0;// Global.
-uint32_t gpsTime = 0;// Global.
-uint8_t gpsHours; // Global.
-uint8_t gpsMinutes; // Global.
-uint8_t gpsSeconds; // Global.
+double gpsSpeed = 0.0; // Global.
+uint32_t gpsTime = 0;  // Global.
+uint8_t gpsHours;      // Global.
+uint8_t gpsMinutes;    // Global.
+uint8_t gpsSeconds;    // Global.
 
 int tile_size = 256;
 
-void initGPS(){
-    ss.begin(GPSBaud, SERIAL_8N1, RXPin, TXPin); 
+void initGPS()
+{
+  ss.begin(GPSBaud, SERIAL_8N1, RXPin, TXPin);
 };
 
 void gpsSmartDelay(unsigned long ms)
@@ -53,22 +54,24 @@ int drawAllXSeconds = 5;
 int drawCount = 0;
 bool hasGPS = false;
 bool isTimeSet = false;
-void loopGPSIDX(){
+void loopGPSIDX()
+{
   if (gps.location.isUpdated())
   {
     // Update curr_gps_idx_coords with gps data
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lng(),
-                         gps.location.lat(), zoom, tile_size);
+                          gps.location.lat(), zoom, tile_size);
     gpsTime = gps.time.value();
-    if (!isTimeSet){
-      M5.Rtc.setDateTime( { { static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day()) }, 
-                            { static_cast<int8_t>(gps.time.hour()), static_cast<int8_t>(gps.time.minute()), static_cast<int8_t>(gps.time.second()) } } );
+    if (!isTimeSet)
+    {
+      M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},
+                          {static_cast<int8_t>(gps.time.hour()), static_cast<int8_t>(gps.time.minute()), static_cast<int8_t>(gps.time.second())}});
       isTimeSet = true;
     }
 
-    #ifdef __loggps__
+#ifdef __loggps__
     printGPSInfo(); // Also Log Data.
-    #endif
+#endif
     hasGPS = true;
   }
 
@@ -76,8 +79,8 @@ void loopGPSIDX(){
   if (hasGPS == false && (drawCount % drawAllXSeconds == 0))
   {
     // Update curr_gps_idx_coords with gps data
-    calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lon,
-                         data[loopCnt].lat, zoom, tile_size);
+    calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lat,
+                          data[loopCnt].lon, zoom, tile_size);
 
     loopCnt++;
     if (loopCnt >= data.size())

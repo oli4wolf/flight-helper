@@ -85,9 +85,10 @@ void loop()
 {
     // Measure GPS
     loopGPSIDX();
+    drawGPSInfo();
 
+    reloadTileCache();
     drawTileCache(tile_cache, curr_gps_pxl_coords);
-
     // if change then reposition screen that gps coord is in the middle
 
     lcd.startWrite();
