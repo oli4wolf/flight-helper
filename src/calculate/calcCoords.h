@@ -9,11 +9,11 @@
 
 int calcIdxOnTile(str_pxl_on_tile &idx_on_tile, int zoom, int lat, int lon,
                   int tile_size);
-void calcCoordsIdx2Tile(str_tile_coords &tile_coords, str_pxl_coords &idx_coords,
+void calcCoordsPxlToTile(str_tile_coords &tile_coords, str_pxl_coords &idx_coords,
                         int tile_size);
 void calcCoordsIdx2IdxOnTile(str_pxl_on_tile &idx_on_tile,
                              str_pxl_coords &idx_coords, int tile_size);
-int calcCoords2CoordsIdx(str_pxl_coords &idx_coords, double lat, double lon,
+int calcCoordsToCoordsPxl(str_pxl_coords &idx_coords, double lat, double lon,
                          int zoom, int tile_size);
 int calcCoords2TileCoords(str_tile_coords &tile_coords, int zoom, double lat,
                           double lon);

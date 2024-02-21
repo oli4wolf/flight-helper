@@ -10,3 +10,5 @@ extern M5GFX lcd;
 extern int zoom;
 extern str_pxl_coords curr_gps_pxl_coords;
 extern str_pxl_coords display_center_pxl_coords;
+
+extern str_pxl_coords last_drawn_pxl_coords;
