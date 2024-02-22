@@ -83,6 +83,8 @@ void reloadTileCache()
                 tile_cache[i]->tile_x = tile_x;
                 tile_cache[i]->tile_y = tile_y;
                 loadTile(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                loadObstaclesPoints(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                loadObstaclesLines(tile_cache[i]->sprite, zoom, tile_x, tile_y);
             }
         }
     }
