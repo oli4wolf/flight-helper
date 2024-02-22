@@ -5,6 +5,7 @@
 #include "globalVariables.h"
 
 #include "graphic/tileCache.h"
+#include "device/gps.h"
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
@@ -62,6 +63,9 @@ void setup()
     // Initialize SD Card
     initializeSDCard();
 
+    // Initialize GPS
+    initGPS();
+
     // Initialize display
     startupScreen();
 
@@ -79,8 +83,15 @@ void setup()
 
 void loop()
 {
+    // Measure GPS
+    loopGPSIDX();
+    // if change then reposition screen that gps coord is in the middle
+    reloadTileCache();
+    drawTileCache(tile_cache, curr_gps_pxl_coords);
+    drawGPSInfo();
+
     lcd.startWrite();
     canvas.pushSprite(0, 0);
     lcd.endWrite();
-    delay(5000);
+    gpsSmartDelay(5000);
 }

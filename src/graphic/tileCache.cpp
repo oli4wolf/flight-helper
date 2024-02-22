@@ -7,12 +7,13 @@ int zoom = 15;
 str_pxl_coords curr_gps_pxl_coords = {0, 0};
 str_pxl_coords display_center_pxl_coords = {0, 0};
 
-void initCanvas(){
-        lcd.startWrite();
-        canvas.setPsram(true);
-        canvas.createSprite(lcd.width(), lcd.height());
-        canvas.fillSprite(TFT_LIGHTGREY);
-        lcd.endWrite();
+void initCanvas()
+{
+    lcd.startWrite();
+    canvas.setPsram(true);
+    canvas.createSprite(lcd.width(), lcd.height());
+    canvas.fillSprite(TFT_LIGHTGREY);
+    lcd.endWrite();
 }
 
 // Implement your functions here
@@ -48,12 +49,16 @@ void fillTileCache(double lat, double lon)
 {
     ESP_LOGD("curr_coords", "before calc: x:%d, y: %d", curr_gps_pxl_coords.pxl_x, curr_gps_pxl_coords.pxl_y);
     // Start with a fixed coordinates 	46.95234, 7.45282
-    calcCoords2CoordsIdx(curr_gps_pxl_coords, 46.95234, 7.45282, zoom, TILE_SIZE);
+    calcCoordsToCoordsPxl(curr_gps_pxl_coords, lat, lon, zoom, TILE_SIZE);
 
     // Reset to default Zoom.
+    reloadTileCache();
+}
 
+void reloadTileCache()
+{
     str_tile_coords tile_coords;
-    calcCoordsIdx2Tile(tile_coords, curr_gps_pxl_coords, TILE_SIZE);
+    calcCoordsPxlToTile(tile_coords, curr_gps_pxl_coords, TILE_SIZE);
     ESP_LOGD("curr_coords", "after calc: x:%d, y: %d", curr_gps_pxl_coords.pxl_x, curr_gps_pxl_coords.pxl_y);
 
     int center_tile_x = tile_coords.tile_x;

@@ -83,7 +83,7 @@ int calcIdxOnTile(str_pxl_on_tile &idx_on_tile, int zoom, int lat, int lon,
     return 0;
 }
 
-void calcCoordsIdx2Tile(str_tile_coords &tile_coords, str_pxl_coords &idx_coords,
+void calcCoordsPxlToTile(str_tile_coords &tile_coords, str_pxl_coords &idx_coords,
                         int tile_size)
 {
     tile_coords.tile_x = idx_coords.pxl_x / tile_size;
@@ -97,7 +97,7 @@ void calcCoordsIdx2IdxOnTile(str_pxl_on_tile &idx_on_tile,
     idx_on_tile.pxl_y = idx_coords.pxl_y % tile_size;
 }
 
-int calcCoords2CoordsIdx(str_pxl_coords &idx_coords, double lat, double lon,
+int calcCoordsToCoordsPxl(str_pxl_coords &idx_coords, double lat, double lon,
                          int zoom, int tile_size)
 {
     str_tile_coords tile_coords;
