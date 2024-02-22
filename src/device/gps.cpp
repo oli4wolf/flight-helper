@@ -1,6 +1,6 @@
 #include "gps.h"
 
-#include "sensor/gpsTestData.h"
+#include "device/gpsTestData.h"
 
 TinyGPSPlus gps;
 HardwareSerial ss(2);

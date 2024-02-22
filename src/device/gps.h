@@ -2,7 +2,7 @@
 #define GPS_H
 
 #include "globalVariables.h"
-#include "storage.h" // used for logging of measurement.
+#include "device/storage.h" // used for logging of measurement.
 #include "coordStruct.h"
 #include "calculate/calcCoords.h"
 #include <TinyGPSPlus.h>

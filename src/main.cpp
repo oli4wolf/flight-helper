@@ -5,7 +5,7 @@
 #include "globalVariables.h"
 
 #include "graphic/tileCache.h"
-#include "sensor/gps.h"
+#include "device/gps.h"
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
