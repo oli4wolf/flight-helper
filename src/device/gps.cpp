@@ -62,6 +62,12 @@ void loopGPSIDX()
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
                           gps.location.lng(), zoom, tile_size);
     gpsTime = gps.time.value();
+    // Update global time variables
+    gpsHours = gps.time.hour();
+    gpsMinutes = gps.time.minute();
+    gpsSeconds = gps.time.second();
+    gpsSpeed = gps.speed.kmph();
+
     if (!isTimeSet)
     {
       M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},
