@@ -18,6 +18,8 @@ static const int8_t TXPin = 14;
 
 // declared twice, Todo: refactoring needed.
 void initGPS();
+void Task_GPS_read_core0(void *pvParameters);
+void gpsDebugCoords();
 void gpsSmartDelay(unsigned long ms);
 void printGPSInfo();
 void loopGPSIDX();

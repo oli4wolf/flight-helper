@@ -64,6 +64,18 @@ void drawMap()
     lcd.endWrite();
 }
 
+// init GPS Task
+void initGPSTask(){
+    xTaskCreatePinnedToCore(
+      Task_GPS_read_core0, /* Task function. */
+      "Task_GPS_read",     /* name of task. */
+      4096,                /* Stack size of task */
+      NULL,                /* parameter of the task */
+      1,                   /* priority of the task */
+      &Task_GPS_read,      /* Task handle */
+      0);                  /* pin task to core 0 */
+}
+
 void setup()
 {
     // Initialize M5Stack
@@ -77,6 +89,9 @@ void setup()
 
     // Initialize GPS
     initGPS();
+
+    // Initialize GPS Task
+    initGPSTask();
 
     // Initialize display
     startupScreen();
@@ -93,12 +108,14 @@ void setup()
     drawTileCache(tile_cache, curr_gps_pxl_coords);
 }
 
+// Main Loop uses Xtensa::Core1
 void loop()
 {
     // Measure GPS
-    loopGPSIDX();
+    //loopGPSIDX();
     // if change then reposition screen that gps coord is in the middle
     drawMap();
-    gpsSmartDelay(5000);
+
+    delay(5000);
 }
 

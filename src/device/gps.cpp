@@ -13,20 +13,36 @@ uint8_t gpsSeconds;    // Global.
 
 int tile_size = 256;
 
+TaskHandle_t Task_GPS_read = NULL; // Global
+
+int loopCnt = 0;
+int drawAllXSeconds = 5;
+int drawCount = 0;
+bool hasGPS = false;
+bool isTimeSet = false;
+void Task_GPS_read_core0(void *pvParameters)
+{
+  for (;;)
+  {
+    while (ss.available() > 0)
+      gps.encode(ss.read());
+    if (gps.location.isUpdated())
+    {
+      ESP_LOGD("GPS_read", "lat/lon:%f/%f, kmph: %f", gps.location.lat(), gps.location.lng(), gps.speed.kmph());
+      hasGPS = true;
+      loopGPSIDX();
+    }
+
+    gpsDebugCoords();
+
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+  }
+}
+
 void initGPS()
 {
   ss.begin(GPSBaud, SERIAL_8N1, RXPin, TXPin);
 };
-
-void gpsSmartDelay(unsigned long ms)
-{
-  unsigned long start = millis();
-  do
-  {
-    while (ss.available())
-      gps.encode(ss.read());
-  } while (millis() - start < ms);
-}
 
 void printGPSInfo()
 {
@@ -41,38 +57,34 @@ void printGPSInfo()
   logger(buff, "/gps.csv");
 }
 
-int loopCnt = 0;
-int drawAllXSeconds = 5;
-int drawCount = 0;
-bool hasGPS = false;
-bool isTimeSet = false;
 void loopGPSIDX()
 {
-  if (gps.location.isUpdated())
+  // Update curr_gps_idx_coords with gps data
+  calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
+                        gps.location.lng(), zoom, tile_size);
+
+  // Update global time variables
+  gpsHours = gps.time.hour();
+  gpsMinutes = gps.time.minute();
+  gpsSeconds = gps.time.second();
+  gpsSpeed = gps.speed.kmph();
+
+  if (!isTimeSet)
   {
-    // Update curr_gps_idx_coords with gps data
-    calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
-                          gps.location.lng(), zoom, tile_size);
-
-    // Update global time variables
-    gpsHours = gps.time.hour();
-    gpsMinutes = gps.time.minute();
-    gpsSeconds = gps.time.second();
-    gpsSpeed = gps.speed.kmph();
-
-    if (!isTimeSet)
-    {
-      M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},
-                          {static_cast<int8_t>(gps.time.hour()), static_cast<int8_t>(gps.time.minute()), static_cast<int8_t>(gps.time.second())}});
-      isTimeSet = true;
-    }
-
-#ifdef __loggps__
-    printGPSInfo(); // Also Log Data.
-#endif
-    hasGPS = true;
+    M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},
+                        {static_cast<int8_t>(gps.time.hour()), static_cast<int8_t>(gps.time.minute()), static_cast<int8_t>(gps.time.second())}});
+    isTimeSet = true;
   }
 
+#ifdef __loggps__
+  printGPSInfo(); // Also Log Data.
+#endif
+}
+
+void gpsDebugCoords()
+{
+// Enter Debugmode if no GPS Signal is received and activated.
+#ifdef __gpsdebug__
   drawCount = drawCount + 1;
   if (hasGPS == false && (drawCount % drawAllXSeconds == 0))
   {
@@ -86,4 +98,5 @@ void loopGPSIDX()
       loopCnt = 0;
     }
   }
+#endif
 }
