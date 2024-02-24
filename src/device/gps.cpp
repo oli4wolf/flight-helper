@@ -7,7 +7,6 @@ HardwareSerial ss(2);
 
 // Variables [GPS]
 double gpsSpeed = 0.0; // Global.
-uint32_t gpsTime = 0;  // Global.
 uint8_t gpsHours;      // Global.
 uint8_t gpsMinutes;    // Global.
 uint8_t gpsSeconds;    // Global.
@@ -32,17 +31,10 @@ void gpsSmartDelay(unsigned long ms)
 void printGPSInfo()
 {
   gpsSpeed = gps.speed.kmph();
-  gpsTime = gps.time.value();
   gpsHours = gps.time.hour();
   gpsMinutes = gps.time.minute();
   gpsSeconds = gps.time.second();
-  ESP_LOGD("printGPSInfo", "Satellites: %d", gps.satellites.value());
-  ESP_LOGD("printGPSInfo", "hdop: %d", gps.hdop.value());
-  ESP_LOGD("printGPSInfo", "lat: %f", gps.location.lat());
-  ESP_LOGD("printGPSInfo", "lon: %f", gps.location.lng());
-  ESP_LOGD("printGPSInfo", "Age: %d", gps.location.age());
-  ESP_LOGD("printGPSInfo", "kmph: %f", gpsSpeed);
-  ESP_LOGD("printGPSInfo", "seconds: %d", gps.time.second());
+  ESP_LOGD("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f", gps.satellites.value(), gps.hdop.value(), gps.location.lat(), gps.location.lng(), gpsSpeed);
 
   char buff[100];
   snprintf(buff, sizeof(buff), "%d: %f, %f, %f, %f", gps.time.value(), gps.location.lat(), gps.location.lng(), gpsSpeed, gps.altitude.meters());
@@ -61,7 +53,13 @@ void loopGPSIDX()
     // Update curr_gps_idx_coords with gps data
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
                           gps.location.lng(), zoom, tile_size);
-    gpsTime = gps.time.value();
+
+    // Update global time variables
+    gpsHours = gps.time.hour();
+    gpsMinutes = gps.time.minute();
+    gpsSeconds = gps.time.second();
+    gpsSpeed = gps.speed.kmph();
+
     if (!isTimeSet)
     {
       M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},

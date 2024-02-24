@@ -6,6 +6,7 @@
 
 #include "graphic/tileCache.h"
 #include "device/gps.h"
+#include "Arduino.h"
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
@@ -52,6 +53,17 @@ void startupScreen()
     delay(5000);
 }
 
+void drawMap()
+{
+    reloadTileCache();
+    drawTileCache(tile_cache, curr_gps_pxl_coords);
+    drawGPSInfo();
+
+    lcd.startWrite();
+    canvas.pushSprite(0, 0);
+    lcd.endWrite();
+}
+
 void setup()
 {
     // Initialize M5Stack
@@ -86,12 +98,7 @@ void loop()
     // Measure GPS
     loopGPSIDX();
     // if change then reposition screen that gps coord is in the middle
-    reloadTileCache();
-    drawTileCache(tile_cache, curr_gps_pxl_coords);
-    drawGPSInfo();
-
-    lcd.startWrite();
-    canvas.pushSprite(0, 0);
-    lcd.endWrite();
+    drawMap();
     gpsSmartDelay(5000);
 }
+
