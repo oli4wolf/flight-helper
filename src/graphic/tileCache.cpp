@@ -9,11 +9,15 @@ str_pxl_coords display_center_pxl_coords = {0, 0};
 
 void initCanvas()
 {
-    lcd.startWrite();
-    canvas.setPsram(true);
-    canvas.createSprite(lcd.width(), lcd.height());
-    canvas.fillSprite(TFT_LIGHTGREY);
-    lcd.endWrite();
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+    {
+        lcd.startWrite();
+        canvas.setPsram(true);
+        canvas.createSprite(lcd.width(), lcd.height());
+        canvas.fillSprite(TFT_LIGHTGREY);
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
+    }
 }
 
 // Implement your functions here

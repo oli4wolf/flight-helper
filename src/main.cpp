@@ -7,6 +7,7 @@
 #include "graphic/tileCache.h"
 #include "device/gps.h"
 #include "Arduino.h"
+#include "graphic/drawGPS.h" // Todo: might bundle the drawing logics in one.
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
@@ -59,9 +60,15 @@ void drawMap()
     drawTileCache(tile_cache, curr_gps_pxl_coords);
     drawGPSInfo();
 
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+    {
     lcd.startWrite();
     canvas.pushSprite(0, 0);
     lcd.endWrite();
+    xSemaphoreGive(semDrawScreen);
+    }else{
+        ESP_LOGW("drawMap", "Could not take semaphore for Drawing.");
+    }
 }
 
 // init GPS Task
