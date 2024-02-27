@@ -86,7 +86,7 @@ void initGPSTask(){
 
 void setup()
 {
-    xSemaphoreGive(semDrawScreen); //Free for first usage.
+    //xSemaphoreGive(semDrawScreen); //Free for first usage.
 
     // Initialize M5Stack
     initializeM5Stack();
@@ -121,11 +121,8 @@ void setup()
 // Main Loop uses Xtensa::Core1
 void loop()
 {
-    // Measure GPS
-    //loopGPSIDX();
     // if change then reposition screen that gps coord is in the middle
     drawMap();
 
-    delay(5000);
+    delay(1000);
 }
-
