@@ -8,6 +8,7 @@ const char point_dir_path[] = "/obstacles";
 
 void loadTile(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {
+    ESP_LOGD("LoadTile", "Loading tile: %d, %d, %d", zoom, tile_x, tile_y);
     snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d.jpeg", map_dir_path, zoom, tile_x,
              tile_y);
 
@@ -98,11 +99,10 @@ void loadObstaclesLines(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
         ESP_LOGI("loadObstaclesLines", "Invalid Line dat:  %s", file_path);
     }
     fp.close();
-};
+}
 
 void loadObstaclesPoints(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {
-
     int point_x, point_y;
 
     snprintf(file_path, LEN_FILE_PATH, "%s/%d/%d/%d_point.dat", point_dir_path, zoom,
@@ -147,4 +147,4 @@ void loadObstaclesPoints(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
     {
         ESP_LOGW("loadObstaclesPoints", "Invalid point dat:  %s", file_path);
     }
-};
+}
