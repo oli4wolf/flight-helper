@@ -12,6 +12,7 @@
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
 M5GFX lcd;
+SemaphoreHandle_t semDrawScreen = xSemaphoreCreateMutex();
 
 void initializeM5Stack()
 {
@@ -85,6 +86,8 @@ void initGPSTask(){
 
 void setup()
 {
+    xSemaphoreGive(semDrawScreen); //Free for first usage.
+
     // Initialize M5Stack
     initializeM5Stack();
 

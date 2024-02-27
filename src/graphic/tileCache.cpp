@@ -68,29 +68,38 @@ void reloadTileCache()
     int center_tile_x = tile_coords.tile_x;
     int center_tile_y = tile_coords.tile_y;
 
-    for (int i_x = 0; i_x < n_sprite_x; i_x++)
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
-        for (int i_y = 0; i_y < n_sprite_y; i_y++)
+
+        for (int i_x = 0; i_x < n_sprite_x; i_x++)
         {
-            int i = n_sprite_x * i_y + i_x;
-            int tile_x = center_tile_x + i_x - n_sprite_x / 2;
-            int tile_y = center_tile_y + i_y - n_sprite_y / 2;
-#ifdef __printTileCache__
-            ESP_LOGD("updateTileCache", "    tile (%d,%d,%d[%d],%d[%d]) -> ", i, zoom, tile_cache[i]->tile_x, tile_x, tile_cache[i]->tile_y, tile_y);
-#endif
-            if (!(tile_cache[i]->zoom == zoom && tile_cache[i]->tile_x == tile_x &&
-                  tile_cache[i]->tile_y == tile_y))
+            for (int i_y = 0; i_y < n_sprite_y; i_y++)
             {
-                ESP_LOGI("updateTileCache", "changed, update required. ");
-                // bug while not initialised it is allways 0 0
-                tile_cache[i]->zoom = zoom;
-                tile_cache[i]->tile_x = tile_x;
-                tile_cache[i]->tile_y = tile_y;
-                loadTile(tile_cache[i]->sprite, zoom, tile_x, tile_y);
-                loadObstaclesPoints(tile_cache[i]->sprite, zoom, tile_x, tile_y);
-                loadObstaclesLines(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                int i = n_sprite_x * i_y + i_x;
+                int tile_x = center_tile_x + i_x - n_sprite_x / 2;
+                int tile_y = center_tile_y + i_y - n_sprite_y / 2;
+#ifdef __printTileCache__
+                ESP_LOGD("updateTileCache", "    tile (%d,%d,%d[%d],%d[%d]) -> ", i, zoom, tile_cache[i]->tile_x, tile_x, tile_cache[i]->tile_y, tile_y);
+#endif
+                if (!(tile_cache[i]->zoom == zoom && tile_cache[i]->tile_x == tile_x &&
+                      tile_cache[i]->tile_y == tile_y))
+                {
+                    ESP_LOGI("updateTileCache", "changed, update required. ");
+                    // bug while not initialised it is allways 0 0
+                    tile_cache[i]->zoom = zoom;
+                    tile_cache[i]->tile_x = tile_x;
+                    tile_cache[i]->tile_y = tile_y;
+                    loadTile(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                    loadObstaclesPoints(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                    loadObstaclesLines(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                }
             }
         }
+        xSemaphoreGive(semDrawScreen);
+    }
+    else
+    {
+        ESP_LOGW("reloadTileCache", "Could not take semaphore for LoadTile.");
     }
 }
 

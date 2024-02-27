@@ -5,7 +5,6 @@
 #include "globalVariables.h"
 
 // Declare any global variables or constants here
-extern SemaphoreHandle_t semDrawScreen;
 
 // Declare any function prototypes here
 

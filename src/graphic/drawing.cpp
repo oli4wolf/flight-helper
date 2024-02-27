@@ -1,7 +1,5 @@
 #include "drawing.h"
 
-SemaphoreHandle_t semDrawScreen = xSemaphoreCreateMutex();
-
 // Implement the functions defined in drawing.h here
 void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int color)
 {

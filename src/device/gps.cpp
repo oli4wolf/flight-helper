@@ -35,6 +35,8 @@ void Task_GPS_read_core0(void *pvParameters)
 
     gpsDebugCoords();
 
+    drawGPSInfo();
+
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
