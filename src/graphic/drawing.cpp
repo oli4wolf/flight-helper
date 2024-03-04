@@ -25,7 +25,7 @@ void drawGPSInfo()
     ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
     lcd.startWrite();
     canvas.setTextSize(2);
-    if ((rtc_millis - gps_time) > 5000)
+    if ((rtc_millis-gps_time) > 5000)
     {
         canvas.setTextColor(TFT_RED, TFT_BLACK);
     }
