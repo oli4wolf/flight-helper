@@ -24,6 +24,7 @@ void shiftTilesLeft(sprite_struct *tile_cache[], int n_sprite_x,
                     int n_sprite_y);
 void shiftTilesRight(sprite_struct *tile_cache[], int n_sprite_x,
                      int n_sprite_y);
+
 void shiftTilesUp(sprite_struct *tile_cache[], int n_sprite_x,
                   int n_sprite_y);
 void shiftTilesDown(sprite_struct *tile_cache[], int n_sprite_x,
