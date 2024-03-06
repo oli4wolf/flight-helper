@@ -6,6 +6,7 @@
 #include "globalVariables.h"
 #include "loadTiles.h"
 #include "calculate/calcCoords.h"
+#include "graphic/shiftTiles.h"
 
 // Define any global variables here
 const int TILE_SIZE = 256; // Downloaded Tilesizes from Swiss Topo.
