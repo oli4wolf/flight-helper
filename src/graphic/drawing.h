@@ -5,11 +5,9 @@
 #include "globalVariables.h"
 
 // Declare any global variables or constants here
-extern SemaphoreHandle_t semDrawScreen;
 
 // Declare any function prototypes here
 
 void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int color);
-void drawGPSInfo();
 
 #endif // DRAWING_H
