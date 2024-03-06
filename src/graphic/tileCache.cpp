@@ -75,7 +75,7 @@ void reloadTileCache()
             int tile_x = center_tile_x + i_x - n_sprite_x / 2;
             int tile_y = center_tile_y + i_y - n_sprite_y / 2;
 #ifdef __printTileCache__
-            // ESP_LOGD("updateTileCache", "    tile (%d,%d,%d[%d],%d[%d]) -> ", i, zoom, tile_cache[i]->tile_x, tile_x, tile_cache[i]->tile_y, tile_y);
+            ESP_LOGD("updateTileCache", "    tile (%d,%d,%d[%d],%d[%d]) -> ", i, zoom, tile_cache[i]->tile_x, tile_x, tile_cache[i]->tile_y, tile_y);
 #endif
             if (!(tile_cache[i]->zoom == zoom && tile_cache[i]->tile_x == tile_x &&
                   tile_cache[i]->tile_y == tile_y))
@@ -97,7 +97,7 @@ void drawTileCache(sprite_struct *tile_cache[], str_pxl_coords &pxl_coords)
 {
     int i, offset_x, offset_y;
 #ifdef __printTileCache__
-    //ESP_LOGD("pushTileCache", "pxl_coords=(%d,%d) which is tile=(%d,%d), pxl_on_tile=(%d,%d)\n", pxl_coords.pxl_x, pxl_coords.pxl_y, pxl_coords.pxl_x / TILE_SIZE, pxl_coords.pxl_y / TILE_SIZE, pxl_coords.pxl_x % TILE_SIZE, pxl_coords.pxl_y % TILE_SIZE);
+    ESP_LOGD("pushTileCache", "pxl_coords=(%d,%d) which is tile=(%d,%d), pxl_on_tile=(%d,%d)\n", pxl_coords.pxl_x, pxl_coords.pxl_y, pxl_coords.pxl_x / TILE_SIZE, pxl_coords.pxl_y / TILE_SIZE, pxl_coords.pxl_x % TILE_SIZE, pxl_coords.pxl_y % TILE_SIZE);
 #endif
     for (int i_y = 0; i_y < n_sprite_y; i_y++) // Loop over the height of tiles (3)
     {
@@ -109,7 +109,9 @@ void drawTileCache(sprite_struct *tile_cache[], str_pxl_coords &pxl_coords)
             offset_y = tile_cache[i]->tile_y * TILE_SIZE - pxl_coords.pxl_y + lcd.height() / 2; // Take tile y (0 coord) - coord y(bigger than 0) and Add height -> Offset_y
 
             tile_cache[i]->sprite->pushSprite(offset_x, offset_y);
-//            ESP_LOGD("pushTileCache", "  i:%i, tile=(%d,%d), offset=(%d,%d) bufferlength=(%d)", i, tile_cache[i]->tile_x, tile_cache[i]->tile_y, offset_x, offset_y, tile_cache[i]->sprite->readPixel(0, 0));
+#ifdef __printTileCache__
+            ESP_LOGD("pushTileCache", "  i:%i, tile=(%d,%d), offset=(%d,%d) bufferlength=(%d)", i, tile_cache[i]->tile_x, tile_cache[i]->tile_y, offset_x, offset_y, tile_cache[i]->sprite->readPixel(0, 0));
+#endif
         }
     }
 }

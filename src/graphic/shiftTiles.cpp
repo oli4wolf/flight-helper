@@ -20,7 +20,6 @@ Shift left.
             [3,4,5]     [4,5,-]
             [6,7,8] to  [7,8,-]
 */
-sprite_struct *tmp_ptr[3];
 
 shift_direction determineShiftTileDirection(int center_tile_x, int center_tile_y, sprite_struct *tile_cache[], int n_sprite_x,
                                             int n_sprite_y)
@@ -90,11 +89,6 @@ void invalidateTile(sprite_struct *ptr_tmp)
 void shiftTilesLeft(sprite_struct *tile_cache[], int n_sprite_x,
                     int n_sprite_y)
 {
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheLeft", "Before tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
-
     sprite_struct *ptr_tmp;
 
     for (int i_y = 0; i_y < n_sprite_y; i_y++)
@@ -110,21 +104,11 @@ void shiftTilesLeft(sprite_struct *tile_cache[], int n_sprite_x,
         tile_cache[n_sprite_x * i_y + n_sprite_x - 1] = ptr_tmp;
         invalidateTile(ptr_tmp);
     }
-
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheLeft", "Inbetween tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
 }
 
 void shiftTilesRight(sprite_struct *tile_cache[], int n_sprite_x,
                      int n_sprite_y)
 {
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheRight", "Before tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
-
     sprite_struct *ptr_tmp;
 
     for (int i_y = 0; i_y < n_sprite_y; i_y++)
@@ -140,21 +124,11 @@ void shiftTilesRight(sprite_struct *tile_cache[], int n_sprite_x,
         tile_cache[n_sprite_x * i_y] = ptr_tmp;
         invalidateTile(ptr_tmp);
     }
-
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheRight", "After tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
 }
 
 void shiftTilesUp(sprite_struct *tile_cache[], int n_sprite_x,
                   int n_sprite_y)
 {
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheUp", "Before tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
-
     sprite_struct *ptr_tmp;
 
     for (int i_x = 0; i_x < n_sprite_x; i_x++)
@@ -170,21 +144,11 @@ void shiftTilesUp(sprite_struct *tile_cache[], int n_sprite_x,
         tile_cache[n_sprite_x * (n_sprite_y - 1) + i_x] = ptr_tmp;
         invalidateTile(ptr_tmp);
     }
-
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheUp", "After tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
 }
 
 void shiftTilesDown(sprite_struct *tile_cache[], int n_sprite_x,
                     int n_sprite_y)
 {
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheDown", "Before tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
-    }
-
     // Shift the tiles to the left
     sprite_struct *ptr_tmp;
 
@@ -200,10 +164,5 @@ void shiftTilesDown(sprite_struct *tile_cache[], int n_sprite_x,
 
         tile_cache[i_x] = ptr_tmp;
         invalidateTile(ptr_tmp);
-    }
-
-    for (int i = 0; i < n_sprite_x * n_sprite_y; i++)
-    {
-        ESP_LOGD("ShiftTileCacheDown", "After tile (i=%d,zoom=%d,tile_x=%d,tile_y=%d)", i, zoom, tile_cache[i]->tile_x, tile_cache[i]->tile_y);
     }
 }
