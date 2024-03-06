@@ -5,7 +5,7 @@
 #include "device/storage.h" // used for logging of measurement.
 #include "coordStruct.h"
 #include "calculate/calcCoords.h"
-#include "graphic/drawGPS.h"
+#include "graphic/drawing.h"
 #include <TinyGPSPlus.h>
 #include <HardwareSerial.h>
 

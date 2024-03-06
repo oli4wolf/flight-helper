@@ -7,7 +7,7 @@
 #include "graphic/tileCache.h"
 #include "device/gps.h"
 #include "Arduino.h"
-#include "graphic/drawGPS.h" // Todo: might bundle the drawing logics in one.
+#include "graphic/drawing.h" // Todo: might bundle the drawing logics in one.
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
