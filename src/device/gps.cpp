@@ -13,7 +13,7 @@ uint8_t gpsSeconds;    // Global.
 
 int tile_size = 256;
 
-TaskHandle_t Task_GPS_read = NULL; // Global
+
 
 int loopCnt = 0;
 int drawAllXSeconds = 5;
@@ -34,8 +34,6 @@ void Task_GPS_read_core0(void *pvParameters)
     }
 
     gpsDebugCoords();
-
-    drawGPSInfo();
 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
