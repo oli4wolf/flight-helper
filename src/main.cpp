@@ -60,7 +60,8 @@ void drawMap()
 {
     reloadTileCache();
     drawTileCache(tile_cache, curr_gps_pxl_coords);
-    drawGPSInfo();
+    //ESP_LOGD("drawMap", "Drawing GPS Info.");
+    //drawGPSInfo();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {

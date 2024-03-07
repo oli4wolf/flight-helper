@@ -4,6 +4,7 @@
 
 // Example function implementation
 TaskHandle_t Task_GPS_read = NULL;
+TaskHandle_t Task_Clock = NULL;
 
 // init GPS Task
 void initGPSTask(){
@@ -24,6 +25,6 @@ void initClockTask(){
       4096,             /* Stack size of task */
       NULL,             /* parameter of the task */
       0,                /* priority of the task */
-      NULL,             /* Task handle */
+      &Task_Clock,             /* Task handle */
       0);               /* pin task to core 1 */
 }

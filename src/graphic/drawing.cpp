@@ -40,6 +40,7 @@ void drawGPSInfo()
 
 void drawGPSInfoLoop(void *pvParameters){
     while(true){
+        ESP_LOGD("drawGPSInfoLoop", "Drawing GPS Info.");
         drawGPSInfo();
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
