@@ -8,6 +8,7 @@
 #include "device/gps.h"
 #include "Arduino.h"
 #include "graphic/drawing.h" // Todo: might bundle the drawing logics in one.
+#include "graphic/task.h"
 
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
@@ -59,7 +60,7 @@ void drawMap()
 {
     reloadTileCache();
     drawTileCache(tile_cache, curr_gps_pxl_coords);
-    drawGPSInfo();
+    drawGPSInfo(NULL);
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
@@ -70,18 +71,6 @@ void drawMap()
     }else{
         ESP_LOGW("drawMap", "Could not take semaphore for Drawing.");
     }
-}
-
-// init GPS Task
-void initGPSTask(){
-    xTaskCreatePinnedToCore(
-      Task_GPS_read_core0, /* Task function. */
-      "Task_GPS_read",     /* name of task. */
-      4096,                /* Stack size of task */
-      NULL,                /* parameter of the task */
-      1,                   /* priority of the task */
-      &Task_GPS_read,      /* Task handle */
-      0);                  /* pin task to core 0 */
 }
 
 void setup()
@@ -116,6 +105,9 @@ void setup()
     fillTileCache(46.95234, 7.45282);
 
     drawTileCache(tile_cache, curr_gps_pxl_coords);
+
+    // Start the clock Task.
+    initClockTask();
 }
 
 // Main Loop uses Xtensa::Core1
