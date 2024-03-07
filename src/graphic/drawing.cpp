@@ -18,7 +18,7 @@ void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int 
     sprite->drawLine(x1 + 1, y1 + 1, x2 + 1, y2 + 1, color); // 1,1
 }
 
-void drawGPSInfo(void *pvParameters)
+void drawGPSInfo()
 {
     uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
     uint32_t gps_time = gpsHours * 3600000 + gpsMinutes * 60000 + gpsSeconds * 1000;
@@ -36,4 +36,11 @@ void drawGPSInfo(void *pvParameters)
     canvas.setCursor(160, 225);
     canvas.printf("%02d:%02d:%02d, %.2f", gpsHours, gpsMinutes, gpsSeconds, gpsSpeed);
     lcd.endWrite();
+}
+
+void drawGPSInfoLoop(void *pvParameters){
+    while(true){
+        drawGPSInfo();
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 }

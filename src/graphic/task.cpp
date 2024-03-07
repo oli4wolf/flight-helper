@@ -19,9 +19,9 @@ void initGPSTask(){
 
 void initClockTask(){
     xTaskCreatePinnedToCore(
-      drawGPSInfo, /* Task function. */
+      drawGPSInfoLoop, /* Task function. */
       "Task_Clock",     /* name of task. */
-      1024,             /* Stack size of task */
+      4096,             /* Stack size of task */
       NULL,             /* parameter of the task */
       0,                /* priority of the task */
       NULL,             /* Task handle */
