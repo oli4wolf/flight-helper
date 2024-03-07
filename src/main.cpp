@@ -60,23 +60,24 @@ void drawMap()
 {
     reloadTileCache();
     drawTileCache(tile_cache, curr_gps_pxl_coords);
-    //ESP_LOGD("drawMap", "Drawing GPS Info.");
-    //drawGPSInfo();
+    drawGPSInfo(); // Added to keep the clock independently from the Tilerefresh.
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
-    lcd.startWrite();
-    canvas.pushSprite(0, 0);
-    lcd.endWrite();
-    xSemaphoreGive(semDrawScreen);
-    }else{
+        lcd.startWrite();
+        canvas.pushSprite(0, 0);
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
+    }
+    else
+    {
         ESP_LOGW("drawMap", "Could not take semaphore for Drawing.");
     }
 }
 
 void setup()
 {
-    //xSemaphoreGive(semDrawScreen); //Free for first usage.
+    // xSemaphoreGive(semDrawScreen); //Free for first usage.
 
     // Initialize M5Stack
     initializeM5Stack();

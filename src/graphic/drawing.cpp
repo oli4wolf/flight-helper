@@ -20,27 +20,37 @@ void drawLineThickness(LGFX_Sprite *sprite, int x1, int x2, int y1, int y2, int 
 
 void drawGPSInfo()
 {
-    uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
-    uint32_t gps_time = gpsHours * 3600000 + gpsMinutes * 60000 + gpsSeconds * 1000;
-    ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
-    lcd.startWrite();
-    canvas.setTextSize(2);
-    if ((rtc_millis-gps_time) > 5000)
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
-        canvas.setTextColor(TFT_RED, TFT_BLACK);
+        uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
+        uint32_t gps_time = gpsHours * 3600000 + gpsMinutes * 60000 + gpsSeconds * 1000;
+        ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
+        lcd.startWrite();
+        canvas.setTextSize(2);
+        if ((rtc_millis - gps_time) > 5000)
+        {
+            canvas.setTextColor(TFT_RED, TFT_BLACK);
+        }
+        else
+        {
+            canvas.setTextColor(TFT_GREEN, TFT_BLACK);
+        }
+        canvas.setCursor(160, 225);
+        canvas.printf("%02d:%02d:%02d, %.2f", gpsHours, gpsMinutes, gpsSeconds, gpsSpeed);
+        canvas.pushSprite(0, 0); //needed to display the text.
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
     }
     else
     {
-        canvas.setTextColor(TFT_GREEN, TFT_BLACK);
+        ESP_LOGI("drawGPSInfo", "Could not take semaphore for Drawing.");
     }
-    canvas.setCursor(160, 225);
-    canvas.printf("%02d:%02d:%02d, %.2f", gpsHours, gpsMinutes, gpsSeconds, gpsSpeed);
-    lcd.endWrite();
 }
 
-void drawGPSInfoLoop(void *pvParameters){
-    while(true){
-        ESP_LOGD("drawGPSInfoLoop", "Drawing GPS Info.");
+void drawGPSInfoLoop(void *pvParameters)
+{
+    while (true)
+    {
         drawGPSInfo();
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
