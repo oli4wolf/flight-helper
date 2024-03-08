@@ -10,15 +10,14 @@ double gpsSpeed = 0.0; // Global.
 uint8_t gpsHours;      // Global.
 uint8_t gpsMinutes;    // Global.
 uint8_t gpsSeconds;    // Global.
+double gpsDegree = 0.0;      // Global.
+bool gpsActive = false;
 
 int tile_size = 256;
-
-
 
 int loopCnt = 0;
 int drawAllXSeconds = 5;
 int drawCount = 0;
-bool hasGPS = false;
 bool isTimeSet = false;
 void Task_GPS_read_core0(void *pvParameters)
 {
@@ -29,7 +28,7 @@ void Task_GPS_read_core0(void *pvParameters)
     if (gps.location.isUpdated())
     {
       ESP_LOGD("GPS_read", "lat/lon:%f/%f, kmph: %f", gps.location.lat(), gps.location.lng(), gps.speed.kmph());
-      hasGPS = true;
+      gpsActive = true;
       loopGPSIDX();
     }
 
@@ -50,7 +49,8 @@ void printGPSInfo()
   gpsHours = gps.time.hour();
   gpsMinutes = gps.time.minute();
   gpsSeconds = gps.time.second();
-  ESP_LOGD("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f", gps.satellites.value(), gps.hdop.value(), gps.location.lat(), gps.location.lng(), gpsSpeed);
+  gpsDegree = gps.course.deg();
+  ESP_LOGD("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps.satellites.value(), gps.hdop.value(), gps.location.lat(), gps.location.lng(), gpsSpeed);
 
   char buff[100];
   snprintf(buff, sizeof(buff), "%d: %f, %f, %f, %f", gps.time.value(), gps.location.lat(), gps.location.lng(), gpsSpeed, gps.altitude.meters());
@@ -68,6 +68,7 @@ void loopGPSIDX()
   gpsMinutes = gps.time.minute();
   gpsSeconds = gps.time.second();
   gpsSpeed = gps.speed.kmph();
+  gpsDegree = gps.course.deg();
 
   if (!isTimeSet)
   {
@@ -86,7 +87,7 @@ void gpsDebugCoords()
 // Enter Debugmode if no GPS Signal is received and activated.
 #ifdef __gpsdebug__
   drawCount = drawCount + 1;
-  if (hasGPS == false && (drawCount % drawAllXSeconds == 0))
+  if (gpsActive == false && (drawCount % drawAllXSeconds == 0))
   {
     // Update curr_gps_idx_coords with gps data
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lat,
