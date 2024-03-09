@@ -12,6 +12,7 @@ uint8_t gpsMinutes;    // Global.
 uint8_t gpsSeconds;    // Global.
 double gpsDegree = 0.0;      // Global.
 bool gpsActive = false;
+bool gpsValid = false;
 
 int tile_size = 256;
 
