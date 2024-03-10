@@ -2,7 +2,7 @@
 
 M5Canvas dir_icon(&canvas);
 
-#define DIR_ICON_COLOR_ACTIVE TFT_BLUE
+#define DIR_ICON_COLOR_ACTIVE TFT_DARKGREEN
 #define DIR_ICON_COLOR_INACTIVE TFT_DARKGREY
 #define DIR_ICON_BG_COLOR TFT_WHITE
 #define DIR_ICON_TRANS_COLOR TFT_BLACK
@@ -43,10 +43,12 @@ void drawGPSInfo()
         if ((rtc_millis - gps_time) > 5000)
         {
             canvas.setTextColor(TFT_RED, TFT_BLACK);
+            gpsValid = false;
         }
         else
         {
             canvas.setTextColor(TFT_GREEN, TFT_BLACK);
+            gpsValid = true;
         }
         canvas.setCursor(160, 225);
         canvas.printf("%02d:%02d:%02d, %.2f", gpsHours, gpsMinutes, gpsSeconds, gpsSpeed);
@@ -133,7 +135,7 @@ void pushDirIcon()
         return;
     }
 
-    if (gpsActive)
+    if (gpsValid)
     {
         dir_icon.setPaletteColor(dir_icon_palette_id_fg, DIR_ICON_COLOR_ACTIVE);
     }
