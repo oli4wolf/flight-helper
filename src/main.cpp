@@ -90,9 +90,13 @@ void setup()
 
     // Initialize GPS
     initGPS();
-
     // Initialize GPS Task
     initGPSTask();
+
+    // Initialize Pressure Sensor
+    initVario();
+    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    initVarioTask();
 
     // Initialize display
     startupScreen();

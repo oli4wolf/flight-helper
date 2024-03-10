@@ -28,3 +28,19 @@ void initClockTask(){
       &Task_Clock,             /* Task handle */
       0);               /* pin task to core 1 */
 }
+
+// Vario Task as Scheduled task.
+void initVarioTask(){
+
+    // Needed to change it from the Espressif example .c to .cpp initialization.
+    esp_timer_create_args_t periodic_timer_args = {
+        .callback = &vario_readout_periodic_timer_callback,
+        .name = "vario readout timer"
+    };
+
+    esp_timer_handle_t periodic_timer;
+    ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
+
+    /* Start the timers */
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 20000)); // (1 second/CLIMB_SAMPLES_PER_SEC) to microseconds. 
+}
