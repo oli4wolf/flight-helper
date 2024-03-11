@@ -53,6 +53,10 @@ void startupScreen()
     lcd.println("v0.1");
     lcd.println("by @oli4wolf on github");
     lcd.println("2024-01-12 20:54:02");
+    lcd.println("All the maps and data come from SwissTopo.");
+    lcd.println("Inspiration: https://github.com/akchan/cycle_navi");
+    lcd.println("To generate SD card content: https://github.com/oli4wolf/swisstopo-tile-downloader");
+    lcd.println("This is a non-commercial project.");
     delay(5000);
 }
 
