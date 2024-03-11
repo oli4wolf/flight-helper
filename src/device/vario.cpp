@@ -21,7 +21,6 @@ void varioReadoutLoop(void *pvParameters)
     while (true)
     {
         float pressure = barometricSensor.getPressure();
-        ESP_LOGD("Climb", "Pressure: %f, temperature: %f", pressure, barometricSensor.getTemperature());
 
         if (!barometricSensor.isConnected())
         {
@@ -29,8 +28,6 @@ void varioReadoutLoop(void *pvParameters)
         }
         else
         {
-            ESP_LOGD("Climb", "last_pressure_reading: %f, pressure: %f abs:%f", last_pressure_reading, pressure, abs(last_pressure_reading - pressure));
-
             // Validation code
             if (abs(last_pressure_reading - pressure) > pressure / 3)
             {
@@ -44,7 +41,9 @@ void varioReadoutLoop(void *pvParameters)
 
             // add new value to buffer
             volatile int32_t alt_cm = ((1.0f - pow(pressure / 1013.25f, 0.190295f)) * 145366.45f) * 30.48f;
+#ifdef __printVarioReadout__
             ESP_LOGD("Climb", "Pressure: %f, alt_cm: %d", pressure, alt_cm);
+#endif
 #ifdef __logclimb__
             logClimbAltMS(pressure, alt_cm);
 #endif
