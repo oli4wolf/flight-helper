@@ -9,6 +9,7 @@
 // Define task function prototypes
 void initGPSTask();
 void initClockTask();
-void initVarioTask();
+void initVarioReadoutTask();
+void initVarioAverageTask();
 
 #endif // TASK_H

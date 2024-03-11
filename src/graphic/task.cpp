@@ -5,6 +5,8 @@
 // Example function implementation
 TaskHandle_t Task_GPS_read = NULL;
 TaskHandle_t Task_Clock = NULL;
+TaskHandle_t Task_Vario_Readout = NULL;
+TaskHandle_t Task_Vario_Average = NULL;
 
 // init GPS Task
 void initGPSTask(){
@@ -24,23 +26,31 @@ void initClockTask(){
       "Task_Clock",     /* name of task. */
       4096,             /* Stack size of task */
       NULL,             /* parameter of the task */
-      0,                /* priority of the task */
+      2,                /* priority of the task */
       &Task_Clock,             /* Task handle */
       0);               /* pin task to core 1 */
 }
 
 // Vario Task as Scheduled task.
-void initVarioTask(){
+void initVarioReadoutTask(){
+    xTaskCreatePinnedToCore(
+      varioReadoutLoop, /* Task function. */
+      "Task_Vario_Readout",     /* name of task. */
+      4096,             /* Stack size of task */
+      NULL,             /* parameter of the task */
+      0,                /* priority of the task */
+      &Task_Vario_Readout,             /* Task handle */
+      0);               /* pin task to core 1 */
+}
 
-    // Needed to change it from the Espressif example .c to .cpp initialization.
-    esp_timer_create_args_t periodic_timer_args = {
-        .callback = &vario_readout_periodic_timer_callback,
-        .name = "vario readout timer"
-    };
-
-    esp_timer_handle_t periodic_timer;
-    ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-
-    /* Start the timers */
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 20000)); // (1 second/CLIMB_SAMPLES_PER_SEC) to microseconds. 
+// Vario Task as Scheduled task.
+void initVarioAverageTask(){
+    xTaskCreatePinnedToCore(
+      varioAverageLoop, /* Task function. */
+      "Task_Vario_Average",     /* name of task. */
+      4096,             /* Stack size of task */
+      NULL,             /* parameter of the task */
+      2,                /* priority of the task */
+      &Task_Vario_Average,             /* Task handle */
+      0);               /* pin task to core 1 */
 }

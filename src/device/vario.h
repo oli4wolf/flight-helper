@@ -13,8 +13,8 @@
 #define LR_den				((LR_n*(LR_n+1)*(2*LR_n+1))/6 - LR_n*LR_n - LR_n*LR_n*LR_x + LR_n*LR_x + LR_n*LR_x*LR_x) // LR Denominator Formula.
 
 void initVario();
-void vario_readout_periodic_timer_callback(void *pvParameters);
-void vario_avr_periodic_timer_callback(void *pvParameters);
+void varioReadoutLoop(void *pvParameters);
+void varioAverageLoop(void *pvParameters);
 int16_t climb_update();
 
 const double climb[12] ={-10.0,-3.0,-2.0,-1.0,-0.5,0.0,0.5,1.0,2.0,3.0,5.0,10.0};

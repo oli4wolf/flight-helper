@@ -96,7 +96,9 @@ void setup()
     // Initialize Pressure Sensor
     initVario();
     // Initialize Vario Task reading the pressure out (this time scheduled task.)
-    initVarioTask();
+    //initVarioReadoutTask();
+    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    initVarioAverageTask();
 
     // Initialize display
     startupScreen();

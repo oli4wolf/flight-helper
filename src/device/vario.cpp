@@ -15,8 +15,9 @@ int16_t climb_cms = 0; // Global
 int8_t counter = 0;
 int average_altitude = 0;
 
-void vario_readout_periodic_timer_callback(void *pvParameters)
+void varioReadoutLoop(void *pvParameters)
 {
+    while(true){
     float pressure = barometricSensor.getPressure();
 
     if (!barometricSensor.isConnected())
@@ -52,10 +53,13 @@ void vario_readout_periodic_timer_callback(void *pvParameters)
             }
         }
     }
+    vTaskDelay(20 / portTICK_PERIOD_MS);
+    }
 }
 
-void vario_avr_periodic_timer_callback(void *pvParameters)
+void varioAverageLoop(void *pvParameters)
 {
+    while(true){
         climb_cms = climb_update();
         // Climb
         // Precision of the MS5637 is about 13cm.
@@ -87,6 +91,8 @@ void vario_avr_periodic_timer_callback(void *pvParameters)
             ESP_LOGI("Climb", "Climb average and climb: %f, %f", average_altitude, climb_cms);
             vTaskDelay(500);
         }
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    }
 }
 
 // Initalize pressure sensor.
