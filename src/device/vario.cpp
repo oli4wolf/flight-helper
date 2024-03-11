@@ -93,9 +93,9 @@ void varioAverageLoop(void *pvParameters)
         else
         {
             ESP_LOGI("Climb", "Climb average and climb: %f, %f", average_altitude, climb_cms);
+            drawVarioInfo();
             vTaskDelay(500);
         }
-        vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }
 

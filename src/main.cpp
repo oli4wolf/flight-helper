@@ -62,6 +62,7 @@ void drawMap()
     drawTileCache(tile_cache, curr_gps_pxl_coords);
     drawGPSInfo(); // Added to refresh the GPS Info with the tiles.
     pushDirIcon();
+    drawVarioInfo();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {

@@ -62,6 +62,38 @@ void drawGPSInfo()
     }
 }
 
+void drawVarioInfo(){
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+    {
+        lcd.startWrite();
+        canvas.setTextSize(2);
+        if ((climb_cms) > 50)
+        {
+            canvas.setTextColor(TFT_GREEN, TFT_BLACK);
+            gpsValid = false;
+        }
+        else if ((climb_cms) < -50)
+        {
+            canvas.setTextColor(TFT_RED, TFT_BLACK);
+            gpsValid = false;
+        }
+        else
+        {
+            canvas.setTextColor(TFT_WHITE, TFT_BLACK);
+            gpsValid = true;
+        }
+        canvas.setCursor(0, 225);
+        canvas.printf("Climb: %d", climb_cms);
+        canvas.pushSprite(0, 0); //needed to display the text.
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
+    }
+    else
+    {
+        ESP_LOGI("drawGPSInfo", "Could not take semaphore for Drawing.");
+    }
+}
+
 void drawGPSInfoLoop(void *pvParameters)
 {
     while (true)

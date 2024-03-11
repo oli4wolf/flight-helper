@@ -3,6 +3,7 @@
 
 #include "SparkFun_MS5637_Arduino_Library.h"
 #include "globalVariables.h"
+#include "graphic/drawing.h"
 
 #define CLIMB_SAMPLES_PER_SEC		25	
 #define CLIMB_AVG_SEC			1
