@@ -51,7 +51,7 @@ void startupScreen()
     lcd.setTextSize(2);
     lcd.println("M5Stack Swiss Topo");
     lcd.println("v0.1");
-    lcd.println("by @oli4wolf");
+    lcd.println("by @oli4wolf on github");
     lcd.println("2024-01-12 20:54:02");
     delay(5000);
 }
@@ -60,7 +60,8 @@ void drawMap()
 {
     reloadTileCache();
     drawTileCache(tile_cache, curr_gps_pxl_coords);
-    drawGPSInfo(); // Added to keep the clock independently from the Tilerefresh.
+    drawGPSInfo(); // Added to refresh the GPS Info with the tiles.
+    pushDirIcon();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
@@ -71,7 +72,7 @@ void drawMap()
     }
     else
     {
-        ESP_LOGW("drawMap", "Could not take semaphore for Drawing.");
+        ESP_LOGI("drawMap", "Could not take semaphore for Drawing.");
     }
 }
 
@@ -99,6 +100,9 @@ void setup()
     //initVarioReadoutTask();
     // Initialize Vario Task reading the pressure out (this time scheduled task.)
     initVarioAverageTask();
+    
+    // Initialize direction icon
+    initDirectionIcon();
 
     // Initialize display
     startupScreen();

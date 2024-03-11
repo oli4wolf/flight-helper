@@ -21,3 +21,6 @@ extern double gpsSpeed;    // GPS Speed measurement.
 extern uint8_t gpsHours;   // Time of fix in ms.
 extern uint8_t gpsMinutes; // Time of fix in ms.
 extern uint8_t gpsSeconds; // Time of fix in ms.
+extern double gpsDegree;      // GPS Course measurement.
+extern bool gpsActive;        // GPS is active.
+extern bool gpsValid;        // GPS is valid (not older than n-Seconds).
