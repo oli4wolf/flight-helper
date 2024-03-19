@@ -10,6 +10,8 @@
 #include "graphic/drawing.h" // Todo: might bundle the drawing logics in one.
 #include "graphic/task.h"
 
+#include "calculate/nmea_parser.h"
+
 static constexpr const gpio_num_t SDCARD_CSPIN = GPIO_NUM_4;
 
 M5GFX lcd;
@@ -29,6 +31,18 @@ void initializeM5Stack()
     M5.begin(cfg);
     lcd.init();
     M5.In_I2C.release();
+}
+
+void initializeGPS()
+{
+        /* NMEA parser configuration */
+    nmea_parser_config_t config = NMEA_PARSER_CONFIG_DEFAULT();
+    /* init NMEA parser library */
+    nmea_parser_handle_t nmea_hdl = nmea_parser_init(&config);
+    /* register event handler for NMEA parser library */
+    nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
+
+    vTaskDelay(10000 / portTICK_PERIOD_MS);
 }
 
 void initializeSDCard()
@@ -90,10 +104,11 @@ void setup()
     initializeSDCard();
 
     // Initialize GPS
-    initGPS();
+    //initGPS();
 
     // Initialize GPS Task
-    initGPSTask();
+    //initGPSTask();
+    initializeGPS(); // ESP32 NMEA example.
 
     // Initialize direction icon
     initDirectionIcon();

@@ -9,6 +9,8 @@
 #include <TinyGPSPlus.h>
 #include <HardwareSerial.h>
 
+#include "calculate/nmea_parser.h"
+
 extern TinyGPSPlus gps;
 extern HardwareSerial ss;
 
@@ -26,5 +28,7 @@ void printGPSInfo();
 void loopGPSIDX();
 
 void gpsSmartDelay(unsigned long ms);
+
+void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
 
 #endif // GPS_H
