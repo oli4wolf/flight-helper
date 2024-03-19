@@ -42,11 +42,6 @@ void Task_GPS_read_core0(void *pvParameters)
   }
 }
 
-void initGPS()
-{
-  ss.begin(GPSBaud, SERIAL_8N1, RXPin, TXPin);
-};
-
 void printGPSInfo()
 {
   ESP_LOGD("printGPSInfo", "lat/lon:%f/%f, kmph: %f, deg:%f", gpsLatitude, gpsLongitude, gpsSpeed, gpsDegree);

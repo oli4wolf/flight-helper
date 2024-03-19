@@ -35,14 +35,14 @@ void initializeM5Stack()
 
 void initializeGPS()
 {
-        /* NMEA parser configuration */
-    //nmea_parser_config_t config = NMEA_PARSER_CONFIG_DEFAULT();
+    /* NMEA parser configuration */
+    // nmea_parser_config_t config = NMEA_PARSER_CONFIG_DEFAULT();
     /* init NMEA parser library */
-    //nmea_parser_handle_t nmea_hdl = nmea_parser_init(&config);
+    // nmea_parser_handle_t nmea_hdl = nmea_parser_init(&config);
     /* register event handler for NMEA parser library */
-    //nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
+    // nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
 
-    //vTaskDelay(10000 / portTICK_PERIOD_MS);
+    // vTaskDelay(10000 / portTICK_PERIOD_MS);
 }
 
 void initializeSDCard()
@@ -108,9 +108,6 @@ void setup()
     // Initialize SD Card
     initializeSDCard();
 
-    // Initialize GPS
-    //initGPS();
-
     // Initialize GPS Task
     initGPSTask();
 
@@ -120,7 +117,7 @@ void setup()
     initVarioReadoutTask();
     // Initialize Vario Task reading the pressure out (this time scheduled task.)
     initVarioAverageTask();
-    //initializeGPS(); // ESP32 NMEA example.
+    // initializeGPS(); // ESP32 NMEA example.
 
     // Initialize direction icon
     initDirectionIcon();
