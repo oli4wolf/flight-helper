@@ -9,6 +9,8 @@
 #include <TinyGPSPlus.h>
 #include <HardwareSerial.h>
 
+#include "calculate/nmea_parser.h"
+
 extern TinyGPSPlus gps;
 extern HardwareSerial ss;
 
@@ -18,13 +20,10 @@ static const int8_t RXPin = 13;
 static const int8_t TXPin = 14;
 
 // declared twice, Todo: refactoring needed.
-void initGPS();
 void Task_GPS_read_core0(void *pvParameters);
 void gpsDebugCoords();
-void gpsSmartDelay(unsigned long ms);
 void printGPSInfo();
-void loopGPSIDX();
 
-void gpsSmartDelay(unsigned long ms);
+void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
 
 #endif // GPS_H
