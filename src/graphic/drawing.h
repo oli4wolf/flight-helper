@@ -17,4 +17,6 @@ void drawGPSInfoLoop(void *pvParameters);
 void initDirectionIcon();
 void pushDirIcon();
 
+void drawVarioInfo();
+
 #endif // DRAWING_H

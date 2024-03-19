@@ -27,3 +27,6 @@ extern uint8_t gpsSeconds; // Time of fix in ms.
 extern double gpsDegree;      // GPS Course measurement.
 extern bool gpsActive;        // GPS is active.
 extern bool gpsValid;        // GPS is valid (not older than n-Seconds).
+
+// Vario variables
+extern int16_t climb_cms; // Vario climb rate in cm/s.

@@ -67,6 +67,10 @@ void startupScreen()
     lcd.println("v0.1");
     lcd.println("by @oli4wolf on github");
     lcd.println("2024-01-12 20:54:02");
+    lcd.println("All the maps and data come from SwissTopo.");
+    lcd.println("Inspiration: https://github.com/akchan/cycle_navi");
+    lcd.println("To generate SD card content: https://github.com/oli4wolf/swisstopo-tile-downloader");
+    lcd.println("This is a non-commercial project.");
     delay(5000);
 }
 
@@ -76,6 +80,7 @@ void drawMap()
     drawTileCache(tile_cache, curr_gps_pxl_coords);
     drawGPSInfo(); // Added to refresh the GPS Info with the tiles.
     pushDirIcon();
+    drawVarioInfo();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
@@ -108,6 +113,13 @@ void setup()
 
     // Initialize GPS Task
     initGPSTask();
+
+    // Initialize Pressure Sensor
+    initVario();
+    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    initVarioReadoutTask();
+    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    initVarioAverageTask();
     //initializeGPS(); // ESP32 NMEA example.
 
     // Initialize direction icon
