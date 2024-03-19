@@ -10,11 +10,14 @@ TinyGPSPlus gps;
 HardwareSerial ss(2);
 
 // Variables [GPS]
-double gpsSpeed = 0.0;  // Global.
-uint8_t gpsHours;       // Global.
-uint8_t gpsMinutes;     // Global.
-uint8_t gpsSeconds;     // Global.
-double gpsDegree = 0.0; // Global.
+float gpsLatitude = 0.0;  // GPS Latitude measurement.
+float gpsLongitude = 0.0; // GPS Longitude measurement.
+float gpsAltitude = 0.0;  // GPS Altitude measurement.
+double gpsSpeed = 0.0;    // Global.
+uint8_t gpsHours;         // Global.
+uint8_t gpsMinutes;       // Global.
+uint8_t gpsSeconds;       // Global.
+double gpsDegree = 0.0;   // Global.
 bool gpsActive = false;
 bool gpsValid = false;
 
@@ -30,11 +33,12 @@ void Task_GPS_read_core0(void *pvParameters)
   nmea_parser_config_t config = NMEA_PARSER_CONFIG_DEFAULT();
   /* init NMEA parser library */
   nmea_parser_handle_t nmea_hdl = nmea_parser_init(&config);
+
+  nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
   for (;;)
   {
-    nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
-
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
+    gpsDebugCoords();
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
@@ -45,41 +49,11 @@ void initGPS()
 
 void printGPSInfo()
 {
-  gpsSpeed = gps.speed.kmph();
-  gpsHours = gps.time.hour();
-  gpsMinutes = gps.time.minute();
-  gpsSeconds = gps.time.second();
-  gpsDegree = gps.course.deg();
-  ESP_LOGD("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps.satellites.value(), gps.hdop.value(), gps.location.lat(), gps.location.lng(), gpsSpeed);
+  ESP_LOGD("printGPSInfo", "lat/lon:%f/%f, kmph: %f, deg:%f", gpsLatitude, gpsLongitude, gpsSpeed, gpsDegree);
 
   char buff[100];
-  snprintf(buff, sizeof(buff), "%d: %f, %f, %f, %f", gps.time.value(), gps.location.lat(), gps.location.lng(), gpsSpeed, gps.altitude.meters());
+  snprintf(buff, sizeof(buff), "%d:%d:%d %f, %f, %f, %f", M5.Rtc.getTime().hours, M5.Rtc.getTime().minutes, M5.Rtc.getTime().seconds, gpsLatitude, gpsLongitude, gpsSpeed, gpsAltitude);
   logger(buff, "/gps.csv");
-}
-
-void loopGPSIDX()
-{
-  // Update curr_gps_idx_coords with gps data
-  calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps.location.lat(),
-                        gps.location.lng(), zoom, tile_size);
-
-  // Update global time variables
-  gpsHours = gps.time.hour();
-  gpsMinutes = gps.time.minute();
-  gpsSeconds = gps.time.second();
-  gpsSpeed = gps.speed.kmph();
-  gpsDegree = gps.course.deg();
-
-  if (!isTimeSet)
-  {
-    M5.Rtc.setDateTime({{static_cast<int8_t>(gps.date.year()), static_cast<int8_t>(gps.date.month()), static_cast<int8_t>(gps.date.day())},
-                        {static_cast<int8_t>(gps.time.hour()), static_cast<int8_t>(gps.time.minute()), static_cast<int8_t>(gps.time.second())}});
-    isTimeSet = true;
-  }
-
-#ifdef __loggps__
-  printGPSInfo(); // Also Log Data.
-#endif
 }
 
 void gpsDebugCoords()
@@ -118,34 +92,40 @@ void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int
   case GPS_UPDATE:
     gps = (gps_t *)event_data;
     /* print information parsed from GPS statements */
-    ESP_LOGI(TAG, "%d/%d/%d %d:%d:%d => \r\n"
-                  "\t\t\t\t\t\tlatitude   = %.05f°N\r\n"
-                  "\t\t\t\t\t\tlongitude = %.05f°E\r\n"
-                  "\t\t\t\t\t\taltitude   = %.02fm\r\n"
-                  "\t\t\t\t\t\tspeed      = %fm/s",
-             gps->date.year + YEAR_BASE, gps->date.month, gps->date.day,
-             gps->tim.hour + TIME_ZONE, gps->tim.minute, gps->tim.second,
-             gps->latitude, gps->longitude, gps->altitude, gps->speed);
+    ESP_LOGI("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps->sats_in_use, gps->dop_h, gps->latitude, gps->longitude, gps->speed);
 
     // By getting out the single values we decouple from the tinygpsplus library.
     if (gps->fix == GPS_FIX_GPS)
     {
       calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps->latitude,
                             gps->longitude, zoom, tile_size);
-      gpsSpeed = gps->speed;        // GPS Speed measurement.
-      gpsHours = gps->tim.hour;     // Time of fix in ms.
-      gpsMinutes = gps->tim.minute; // Time of fix in ms.
-      gpsSeconds = gps->tim.second; // Time of fix in ms.
-      gpsDegree = gps->cog;         // GPS Course measurement.
+      gpsSpeed = gps->speed;         // GPS Speed measurement.
+      gpsHours = gps->tim.hour;      // Time of fix in ms.
+      gpsMinutes = gps->tim.minute;  // Time of fix in ms.
+      gpsSeconds = gps->tim.second;  // Time of fix in ms.
+      gpsDegree = gps->cog;          // GPS Course measurement.
+      gpsLatitude = gps->latitude;   // GPS Latitude measurement.
+      gpsLongitude = gps->longitude; // GPS Longitude measurement.
+      gpsAltitude = gps->altitude;
 
       gpsActive = true; // GPS is active.
       gpsValid = true;  // GPS is valid (not older than n-Seconds).
+
+      if (!isTimeSet)
+      {
+        M5.Rtc.setDateTime({{gps->date.year, gps->date.month, gps->date.day},
+                            {gps->tim.hour, gps->tim.minute, gps->tim.second}});
+        isTimeSet = true;
+      }
+#ifdef __loggps__
+      printGPSInfo(); // Also Log Data.
+#endif
     }
 
     break;
   case GPS_UNKNOWN:
     /* print unknown statements */
-    ESP_LOGW(TAG, "Unknown statement:%s", (char *)event_data);
+    // ESP_LOGD(TAG, "Unknown statement:%s", (char *)event_data);
     break;
   default:
     break;
