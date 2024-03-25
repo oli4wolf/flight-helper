@@ -36,7 +36,7 @@ void drawGPSInfo()
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
         uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
-        uint32_t gps_time = gpsHours * 3600000 + gpsMinutes * 60000 + gpsSeconds * 1000;
+        uint32_t gps_time = gps_data.hours * 3600000 + gps_data.minutes * 60000 + gps_data.seconds * 1000;
         ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
         lcd.startWrite();
         canvas.setTextSize(2);
@@ -51,7 +51,7 @@ void drawGPSInfo()
             gpsValid = true;
         }
         canvas.setCursor(160, 225);
-        canvas.printf("%02d:%02d:%02d, %.2f", gpsHours, gpsMinutes, gpsSeconds, gpsSpeed);
+        canvas.printf("%02d:%02d:%02d, %.2f", gps_data.hours, gps_data.minutes, gps_data.seconds, gps_data.speed);
         canvas.pushSprite(0, 0); //needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);
@@ -152,7 +152,7 @@ void initDirectionIcon()
 
 void pushDirIcon()
 {
-    double dir_degree = gpsDegree;
+    double dir_degree = gps_data.degree;
     //int offset_x = curr_gps_pxl_coords.pxl_x - display_center_pxl_coords.pxl_x + M5.Display.width() / 2;
     //int offset_y = curr_gps_pxl_coords.pxl_y - display_center_pxl_coords.pxl_y + M5.Display.height() / 2;
 
