@@ -33,18 +33,6 @@ void initializeM5Stack()
     M5.In_I2C.release();
 }
 
-void initializeGPS()
-{
-    /* NMEA parser configuration */
-    // nmea_parser_config_t config = NMEA_PARSER_CONFIG_DEFAULT();
-    /* init NMEA parser library */
-    // nmea_parser_handle_t nmea_hdl = nmea_parser_init(&config);
-    /* register event handler for NMEA parser library */
-    // nmea_parser_add_handler(nmea_hdl, gps_event_handler, NULL);
-
-    // vTaskDelay(10000 / portTICK_PERIOD_MS);
-}
-
 void initializeSDCard()
 {
     if (!SD.begin(SDCARD_CSPIN, SPI, 20000000))

@@ -6,18 +6,8 @@
 #define YEAR_BASE (2022) // date in GPS starts from 2022
 static const char *TAG = "gps_demo";
 
-TinyGPSPlus gps;
-HardwareSerial ss(2);
-
 // Variables [GPS]
-float gpsLatitude = 0.0;  // GPS Latitude measurement.
-float gpsLongitude = 0.0; // GPS Longitude measurement.
-float gpsAltitude = 0.0;  // GPS Altitude measurement.
-double gpsSpeed = 0.0;    // Global.
-uint8_t gpsHours;         // Global.
-uint8_t gpsMinutes;       // Global.
-uint8_t gpsSeconds;       // Global.
-double gpsDegree = 0.0;   // Global.
+gps_data_t gps_data = {0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0}; // Global GPS Data.
 bool gpsActive = false;
 bool gpsValid = false;
 
@@ -44,10 +34,10 @@ void Task_GPS_read_core0(void *pvParameters)
 
 void printGPSInfo()
 {
-  ESP_LOGD("printGPSInfo", "lat/lon:%f/%f, kmph: %f, deg:%f", gpsLatitude, gpsLongitude, gpsSpeed, gpsDegree);
+  ESP_LOGD("printGPSInfo", "lat/lon:%f/%f, kmph: %f, deg:%f", gps_data.latitude, gps_data.longitude, gps_data.speed, gps_data.degree);
 
   char buff[100];
-  snprintf(buff, sizeof(buff), "%d:%d:%d %f, %f, %f, %f", M5.Rtc.getTime().hours, M5.Rtc.getTime().minutes, M5.Rtc.getTime().seconds, gpsLatitude, gpsLongitude, gpsSpeed, gpsAltitude);
+  snprintf(buff, sizeof(buff), "%d:%d:%d %f, %f, %f, %f", M5.Rtc.getTime().hours, M5.Rtc.getTime().minutes, M5.Rtc.getTime().seconds, gps_data.latitude, gps_data.longitude, gps_data.speed, gps_data.altitude);
   logger(buff, "/gps.csv");
 }
 
@@ -89,19 +79,19 @@ void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int
     /* print information parsed from GPS statements */
     ESP_LOGI("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps->sats_in_use, gps->dop_h, gps->latitude, gps->longitude, gps->speed);
 
-    // By getting out the single values we decouple from the tinygpsplus library.
     if (gps->fix == GPS_FIX_GPS)
     {
       calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps->latitude,
                             gps->longitude, zoom, tile_size);
-      gpsSpeed = gps->speed;         // GPS Speed measurement.
-      gpsHours = gps->tim.hour;      // Time of fix in ms.
-      gpsMinutes = gps->tim.minute;  // Time of fix in ms.
-      gpsSeconds = gps->tim.second;  // Time of fix in ms.
-      gpsDegree = gps->cog;          // GPS Course measurement.
-      gpsLatitude = gps->latitude;   // GPS Latitude measurement.
-      gpsLongitude = gps->longitude; // GPS Longitude measurement.
-      gpsAltitude = gps->altitude;
+
+      gps_data.speed = gps->speed;         // GPS Speed measurement.
+      gps_data.hours = gps->tim.hour;      // Time of fix in ms.
+      gps_data.minutes = gps->tim.minute;  // Time of fix in ms.
+      gps_data.seconds = gps->tim.second;  // Time of fix in ms.
+      gps_data.degree = gps->cog;          // GPS Course measurement.
+      gps_data.latitude = gps->latitude;   // GPS Latitude measurement.
+      gps_data.longitude = gps->longitude; // GPS Longitude measurement.
+      gps_data.altitude = gps->altitude;
 
       gpsActive = true; // GPS is active.
       gpsValid = true;  // GPS is valid (not older than n-Seconds).
