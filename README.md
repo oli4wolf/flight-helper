@@ -9,8 +9,8 @@ There is a limitation with the M5Stack Core2 that the LCD and SD-Card can not be
 Therefore there might be some issues while drawing or accessing SD-Card.
 Accessing SD-Card should have a higher priority (portMAX_DELAY block everything else). The Drawingtasks should load regularly und refresh therefore automatically.
 
-** In-Flight example **
-[![examples](http://img.youtube.com/vi/pJnNsUJWWy8/0.jpg)](http://www.youtube.com/watch?v=pJnNsUJWWy8 "In Flight")
-https://github.com/oli4wolf/flight-helper/tree/main/media/2024-03-24.mp4
-Still not correct is the Vario.
+## In-Flight example ##
+[![examples](http://img.youtube.com/vi/pJnNsUJWWy8/0.jpg)](http://www.youtube.com/watch?v=pJnNsUJWWy8 "In Flight")</br>
+https://github.com/oli4wolf/flight-helper/tree/main/media/2024-03-24.mp4</br>
+Still not correct is the Vario.</br>
 Next Features: Zoom, Scrolling, Hike Paths?
