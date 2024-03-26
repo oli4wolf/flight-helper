@@ -8,3 +8,8 @@ Initial Idea came from: https://github.com/akchan/cycle_navi which seemed easy e
 There is a limitation with the M5Stack Core2 that the LCD and SD-Card can not be accessed in parallel.
 Therefore there might be some issues while drawing or accessing SD-Card.
 Accessing SD-Card should have a higher priority (portMAX_DELAY block everything else). The Drawingtasks should load regularly und refresh therefore automatically.
+
+It Works!
+https://github.com/oli4wolf/flight-helper/tree/main/media/2024-03-24.mp4
+Still not correct is the Vario.
+Next Features: Zoom, Scrolling, Hike Paths?
