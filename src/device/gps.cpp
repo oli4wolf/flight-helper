@@ -10,6 +10,7 @@ static const char *TAG = "gps_demo";
 gps_data_t gps_data = {0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0}; // Global GPS Data.
 bool gpsActive = false;
 bool gpsValid = false;
+bool gps_mode = true;
 
 int tile_size = 256;
 
@@ -43,15 +44,16 @@ void printGPSInfo()
 
 void gpsDebugCoords()
 {
+  if(gps_mode==true){
 // Enter Debugmode if no GPS Signal is received and activated.
 #ifdef __gpsdebug__
   drawCount = drawCount + 1;
   if (gpsActive == false && (drawCount % drawAllXSeconds == 0))
   {
     // Update curr_gps_idx_coords with gps data
+    
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lat,
                           data[loopCnt].lon, zoom, tile_size);
-
     loopCnt++;
     if (loopCnt >= data.size())
     {
@@ -59,6 +61,7 @@ void gpsDebugCoords()
     }
   }
 #endif
+  }
 }
 
 /**
@@ -81,8 +84,10 @@ void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int
 
     if (gps->fix == GPS_FIX_GPS)
     {
+      if(gps_mode==true){ // refactor to be easier to read.
       calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps->latitude,
                             gps->longitude, zoom, tile_size);
+      }
 
       gps_data.speed = gps->speed;         // GPS Speed measurement.
       gps_data.hours = gps->tim.hour;      // Time of fix in ms.

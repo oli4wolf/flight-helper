@@ -21,6 +21,7 @@ extern TaskHandle_t Task_GPS_read;
 extern gps_data_t gps_data;
 extern bool gpsActive;        // GPS is active.
 extern bool gpsValid;        // GPS is valid (not older than n-Seconds).
+extern bool gps_mode;        // GPS mode is active. if scrolling then deactivate GPS mode. Reactivate with button.
 
 // Vario variables
 extern int16_t climb_cms; // Vario climb rate in cm/s.

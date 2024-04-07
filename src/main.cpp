@@ -9,7 +9,7 @@
 #include "Arduino.h"
 #include "graphic/drawing.h" // Todo: might bundle the drawing logics in one.
 #include "graphic/task.h"
-#include "graphic/zoomLevel.h"
+#include "action/action.h"
 
 #include "calculate/nmea_parser.h"
 
@@ -97,19 +97,19 @@ void setup()
     // Initialize SD Card
     initializeSDCard();
 
-    // Initialize GPS Task
-    #ifdef __gps__
+// Initialize GPS Task
+#ifdef __gps__
     initGPSTask();
-    #endif
+#endif
 
-    // Initialize Pressure Sensor
-    #ifdef __vario__
+// Initialize Pressure Sensor
+#ifdef __vario__
     initVario();
     // Initialize Vario Task reading the pressure out (this time scheduled task.)
     initVarioReadoutTask();
     // Initialize Vario Task reading the pressure out (this time scheduled task.)
     initVarioAverageTask();
-    #endif
+#endif
 
     // Initialize direction icon
     initDirectionIcon();
@@ -139,12 +139,7 @@ void loop()
     drawMap();
 
     // Commands
-    M5.update();
-  if (M5.BtnA.wasPressed())
-  {
-    ESP_LOGI("Zoom Level", "Button pressed");
-    changeZoomLevel();
-  }
+    determineAction();
 
     delay(1000);
 }
