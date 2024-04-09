@@ -5,8 +5,10 @@
 #include "zoomLevel.h"
 #include "scroll.h"
 
-void determineAction(){
-        // Commands
+void determineAction()
+{
+    ESP_LOGD("Action", "determineAction");
+    // Commands
     M5.update();
     if (M5.BtnA.wasPressed())
     {
@@ -18,11 +20,8 @@ void determineAction(){
         ESP_LOGI("Button", "Recenter Map.");
         gps_mode = true;
     }
-    else{
-        gps_mode = false;
-        checkTouchMoveEvent();
-    }
 
+    checkTouchMoveEvent();
 }
 
 #endif // ACTION_H

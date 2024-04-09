@@ -5,7 +5,6 @@ LGFX_Sprite canvas(&lcd); // screen buffer // Global
 sprite_struct *tile_cache[n_sprite];
 int zoom = 15;
 str_pxl_coords curr_gps_pxl_coords = {0, 0};
-str_pxl_coords display_center_pxl_coords = {0, 0};
 
 int last_center_tile_x = -1;
 int last_center_tile_y = -1;
