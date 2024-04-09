@@ -153,8 +153,6 @@ void initDirectionIcon()
 void pushDirIcon()
 {
     double dir_degree = gps_data.degree;
-    //int offset_x = curr_gps_pxl_coords.pxl_x - display_center_pxl_coords.pxl_x + M5.Display.width() / 2;
-    //int offset_y = curr_gps_pxl_coords.pxl_y - display_center_pxl_coords.pxl_y + M5.Display.height() / 2;
 
     int offset_x =  M5.Display.width() / 2;
     int offset_y = M5.Display.height() / 2;

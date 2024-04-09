@@ -44,22 +44,23 @@ void printGPSInfo()
 
 void gpsDebugCoords()
 {
-  if(gps_mode==true){
+  if (gps_mode == true)
+  {
 // Enter Debugmode if no GPS Signal is received and activated.
 #ifdef __gpsdebug__
-  drawCount = drawCount + 1;
-  if (gpsActive == false && (drawCount % drawAllXSeconds == 0))
-  {
-    // Update curr_gps_idx_coords with gps data
-    
-    calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lat,
-                          data[loopCnt].lon, zoom, tile_size);
-    loopCnt++;
-    if (loopCnt >= data.size())
+    drawCount = drawCount + 1;
+    if (gpsActive == false && (drawCount % drawAllXSeconds == 0))
     {
-      loopCnt = 0;
+      // Update curr_gps_idx_coords with gps data
+
+      calcCoordsToCoordsPxl(curr_gps_pxl_coords, data[loopCnt].lat,
+                            data[loopCnt].lon, zoom, tile_size);
+      loopCnt++;
+      if (loopCnt >= data.size())
+      {
+        loopCnt = 0;
+      }
     }
-  }
 #endif
   }
 }
@@ -74,50 +75,51 @@ void gpsDebugCoords()
  */
 void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
-  gps_t *gps = NULL;
-  switch (event_id)
-  {
-  case GPS_UPDATE:
-    gps = (gps_t *)event_data;
-    /* print information parsed from GPS statements */
-    ESP_LOGI("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps->sats_in_use, gps->dop_h, gps->latitude, gps->longitude, gps->speed);
-
-    if (gps->fix == GPS_FIX_GPS)
+  if (gps_mode == false)
+  { // refactor to be easier to read.
+    gps_t *gps = NULL;
+    switch (event_id)
     {
-      if(gps_mode==true){ // refactor to be easier to read.
-      calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps->latitude,
-                            gps->longitude, zoom, tile_size);
-      }
+    case GPS_UPDATE:
+      gps = (gps_t *)event_data;
+      /* print information parsed from GPS statements */
+      ESP_LOGI("printGPSInfo", "Satellites: %d, hdop: %d, lat/lon:%f/%f, kmph: %f, deg:%f", gps->sats_in_use, gps->dop_h, gps->latitude, gps->longitude, gps->speed);
 
-      gps_data.speed = gps->speed;         // GPS Speed measurement.
-      gps_data.hours = gps->tim.hour;      // Time of fix in ms.
-      gps_data.minutes = gps->tim.minute;  // Time of fix in ms.
-      gps_data.seconds = gps->tim.second;  // Time of fix in ms.
-      gps_data.degree = gps->cog;          // GPS Course measurement.
-      gps_data.latitude = gps->latitude;   // GPS Latitude measurement.
-      gps_data.longitude = gps->longitude; // GPS Longitude measurement.
-      gps_data.altitude = gps->altitude;
-
-      gpsActive = true; // GPS is active.
-      gpsValid = true;  // GPS is valid (not older than n-Seconds).
-
-      if (!isTimeSet)
+      if (gps->fix == GPS_FIX_GPS)
       {
-        M5.Rtc.setDateTime({{gps->date.year, gps->date.month, gps->date.day},
-                            {gps->tim.hour, gps->tim.minute, gps->tim.second}});
-        isTimeSet = true;
-      }
-#ifdef __loggps__
-      printGPSInfo(); // Also Log Data.
-#endif
-    }
+        calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps->latitude,
+                              gps->longitude, zoom, tile_size);
 
-    break;
-  case GPS_UNKNOWN:
-    /* print unknown statements */
-    // ESP_LOGD(TAG, "Unknown statement:%s", (char *)event_data);
-    break;
-  default:
-    break;
+        gps_data.speed = gps->speed;         // GPS Speed measurement.
+        gps_data.hours = gps->tim.hour;      // Time of fix in ms.
+        gps_data.minutes = gps->tim.minute;  // Time of fix in ms.
+        gps_data.seconds = gps->tim.second;  // Time of fix in ms.
+        gps_data.degree = gps->cog;          // GPS Course measurement.
+        gps_data.latitude = gps->latitude;   // GPS Latitude measurement.
+        gps_data.longitude = gps->longitude; // GPS Longitude measurement.
+        gps_data.altitude = gps->altitude;
+
+        gpsActive = true; // GPS is active.
+        gpsValid = true;  // GPS is valid (not older than n-Seconds).
+
+        if (!isTimeSet)
+        {
+          M5.Rtc.setDateTime({{gps->date.year, gps->date.month, gps->date.day},
+                              {gps->tim.hour, gps->tim.minute, gps->tim.second}});
+          isTimeSet = true;
+        }
+#ifdef __loggps__
+        printGPSInfo(); // Also Log Data.
+#endif
+      }
+
+      break;
+    case GPS_UNKNOWN:
+      /* print unknown statements */
+      // ESP_LOGD(TAG, "Unknown statement:%s", (char *)event_data);
+      break;
+    default:
+      break;
+    }
   }
 }

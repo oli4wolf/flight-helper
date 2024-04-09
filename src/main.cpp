@@ -141,5 +141,12 @@ void loop()
     // Commands
     determineAction();
 
-    delay(1000);
+    if (gps_mode == true)
+    {
+        delay(1000);
+    }
+    else
+    {
+        delay(50);
+    }
 }
