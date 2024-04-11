@@ -18,7 +18,7 @@ int average_altitude = 0;
 void varioReadoutLoop(void *pvParameters)
 {
     last_pressure_reading = barometricSensor.getPressure(); // Initialize it to not be 0.0
-    while (true)
+    while (gps_mode == true) // Debug if that deactivates the load for the vario to increase the performance.
     {
         float pressure = barometricSensor.getPressure();
 

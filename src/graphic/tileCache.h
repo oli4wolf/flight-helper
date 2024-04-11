@@ -5,6 +5,7 @@
 // Include any necessary headers here
 #include "globalVariables.h"
 #include "loadTiles.h"
+#include "loadHotspots.h"
 #include "calculate/calcCoords.h"
 #include "graphic/shiftTiles.h"
 

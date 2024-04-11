@@ -130,15 +130,12 @@ void loadObstaclesPoints(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
                     indexCPos++;
                 }
 
-                if (line.find("253BE10003") != -1)
-                {
                     ESP_LOGD("loadObstaclesPoints", "%s", line.substr(cPos[0], cPos[1]).c_str());
                     ESP_LOGD("loadObstaclesPoints", "%s", line.substr(cPos[1] + 1, cPos[2] - cPos[1]).c_str());
                     ESP_LOGD("loadObstaclesPoints", "%s", line.substr(cPos[2] + 1, cPos[3] - cPos[2]).c_str());
                     ESP_LOGD("loadObstaclesPoints", "%s", line.substr(cPos[3] + 1, cPos[4] - cPos[3]).c_str());
                     ESP_LOGD("loadObstaclesPoints", "%s", line.substr(cPos[4] + 1, line.size() - cPos[4]).c_str());
                     sprite->fillCircle(atoi(line.substr(cPos[3] + 1, cPos[4] - cPos[3]).c_str()), atoi(line.substr(cPos[3] + 1, cPos[4] - cPos[3]).c_str()), 10, TFT_RED);
-                }
             }
         }
         fp.close();

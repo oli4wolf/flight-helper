@@ -43,12 +43,12 @@ void drawGPSInfo()
         if ((rtc_millis - gps_time) > 5000)
         {
             canvas.setTextColor(TFT_RED, TFT_BLACK);
-            gpsValid = false;
+            gps_valid = false;
         }
         else
         {
             canvas.setTextColor(TFT_GREEN, TFT_BLACK);
-            gpsValid = true;
+            gps_valid = true;
         }
         canvas.setCursor(160, 225);
         canvas.printf("%02d:%02d:%02d, %.2f", gps_data.hours, gps_data.minutes, gps_data.seconds, gps_data.speed);
@@ -70,17 +70,17 @@ void drawVarioInfo(){
         if ((climb_cms) > 50)
         {
             canvas.setTextColor(TFT_GREEN, TFT_BLACK);
-            gpsValid = false;
+            gps_valid = false;
         }
         else if ((climb_cms) < -50)
         {
             canvas.setTextColor(TFT_RED, TFT_BLACK);
-            gpsValid = false;
+            gps_valid = false;
         }
         else
         {
             canvas.setTextColor(TFT_WHITE, TFT_BLACK);
-            gpsValid = true;
+            gps_valid = true;
         }
         canvas.setCursor(0, 225);
         canvas.printf("Climb: %d", climb_cms);
@@ -165,7 +165,7 @@ void pushDirIcon()
         return;
     }
 
-    if (gpsValid)
+    if (gps_valid)
     {
         dir_icon.setPaletteColor(dir_icon_palette_id_fg, DIR_ICON_COLOR_ACTIVE);
     }
