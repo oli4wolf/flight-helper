@@ -6,6 +6,7 @@
 #include "globalVariables.h"
 #include "loadTiles.h"
 #include "loadHotspots.h"
+#include "loadObstacles.h"
 #include "calculate/calcCoords.h"
 #include "graphic/shiftTiles.h"
 

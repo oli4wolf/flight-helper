@@ -1,6 +1,6 @@
 #include "loadHotspots.h"
 
-char thermal_file_path[35];
+char thermal_file_path[40];
 const char thermal_dir_path[] = "/thermik";
 
 class Hotspot
@@ -36,6 +36,12 @@ Hotspot parseHotspot(const std::string &line)
         indexCPos++;
     }
 
+    ESP_LOGD("loadHotspot", "%s", line.substr(cPos[0], cPos[1]).c_str());
+    ESP_LOGD("loadHotspot", "%s", line.substr(cPos[1] + 1, cPos[2] - cPos[1]).c_str());
+    ESP_LOGD("loadHotspot", "%s", line.substr(cPos[2] + 1, cPos[3] - cPos[2]).c_str());
+    ESP_LOGD("loadHotspot", "%s", line.substr(cPos[3] + 1, cPos[4] - cPos[3]).c_str());
+    ESP_LOGD("loadHotspot", "%s", line.substr(cPos[4] + 1, line.size() - cPos[4]).c_str());
+
     Hotspot hotspot = Hotspot(
         atoi(line.substr(cPos[0], cPos[1]).c_str()),
         atoi(line.substr(cPos[1] + 1, cPos[2] - cPos[1]).c_str()),
@@ -48,8 +54,9 @@ Hotspot parseHotspot(const std::string &line)
 // Method to display hotspots on the screen
 void displayHotspots(LGFX_Sprite *sprite, Hotspot hotspot)
 {
+    ESP_LOGD("displayHotspots", "Hotspot: %d, %d", hotspot.pxl_x, hotspot.pxl_y);
     // Implementation goes here
-    sprite->fillCircle(hotspot.pxl_x, hotspot.pxl_y, 20, TFT_GREENYELLOW);
+    sprite->fillCircle(hotspot.pxl_x, hotspot.pxl_y, 20, TFT_YELLOW);
 }
 
 void loadHotspots(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
