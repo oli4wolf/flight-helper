@@ -52,7 +52,7 @@ void drawGPSInfo()
         }
         canvas.setCursor(160, 225);
         canvas.printf("%02d:%02d:%02d, %.2f", gps_data.hours, gps_data.minutes, gps_data.seconds, gps_data.speed);
-        canvas.pushSprite(0, 0); //needed to display the text.
+        canvas.pushSprite(0, 0); // needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);
     }
@@ -62,7 +62,8 @@ void drawGPSInfo()
     }
 }
 
-void drawVarioInfo(){
+void drawVarioInfo()
+{
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
         lcd.startWrite();
@@ -84,13 +85,35 @@ void drawVarioInfo(){
         }
         canvas.setCursor(0, 225);
         canvas.printf("Climb: %d", climb_cms);
-        canvas.pushSprite(0, 0); //needed to display the text.
+        canvas.pushSprite(0, 0); // needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);
     }
     else
     {
         ESP_LOGI("drawGPSInfo", "Could not take semaphore for Drawing.");
+    }
+}
+
+void drawHikeMode()
+{
+    if (hike_mode)
+    {
+        if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+        {
+            lcd.startWrite();
+            canvas.setTextSize(2);
+            canvas.setCursor(0, 0);
+            canvas.setTextColor(TFT_YELLOW);
+            canvas.printf("Hike");
+            canvas.pushSprite(0, 0); // needed to display the text.
+            lcd.endWrite();
+            xSemaphoreGive(semDrawScreen);
+        }
+        else
+        {
+            ESP_LOGI("drawHikeMode", "Could not take semaphore for Drawing.");
+        }
     }
 }
 
@@ -105,7 +128,7 @@ void drawGPSInfoLoop(void *pvParameters)
 
 /**
  * @brief Used the concept of akchan cycle_navi.
- * 
+ *
  */
 void initDirectionIcon()
 {
@@ -154,14 +177,14 @@ void pushDirIcon()
 {
     double dir_degree = gps_data.degree;
 
-    int offset_x =  M5.Display.width() / 2;
+    int offset_x = M5.Display.width() / 2;
     int offset_y = M5.Display.height() / 2;
 
     // When dir icon is out of canvas
     if (!((-DIR_ICON_R < offset_x && offset_x < M5.Display.width() + DIR_ICON_R) &&
           (-DIR_ICON_R < offset_y && offset_y < M5.Display.height() + DIR_ICON_R)))
     {
-            ESP_LOGD("pushDirIcon()","out of canvas offset=(%d,%d)\n", offset_x, offset_y);
+        ESP_LOGD("pushDirIcon()", "out of canvas offset=(%d,%d)\n", offset_x, offset_y);
         return;
     }
 

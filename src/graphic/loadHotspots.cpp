@@ -63,7 +63,7 @@ void loadHotspots(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {
     int point_x, point_y;
 
-    snprintf(thermal_file_path, 35, "%s/%d/%d/%d_hotspot.dat", thermal_dir_path, zoom,
+    snprintf(thermal_file_path, 40, "%s/%d/%d/%d_hotspot.dat", thermal_dir_path, zoom,
              tile_x, tile_y);
 
     ESP_LOGD("loadHotspots", "Path to points: %s", thermal_file_path);
@@ -75,10 +75,16 @@ void loadHotspots(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
             ESP_LOGD("loadHotspots", "Point dat was detected.  %s", thermal_file_path);
             while (fp.available())
             {
-
                 std::string line = fp.readStringUntil('\n').c_str();
+                ESP_LOGD("loadHotspots", "Reading line %s", line.c_str());
                 Hotspot hotspot = parseHotspot(line);
+                ESP_LOGD("loadHotspots", "Hotspot: %d, %d", hotspot.pxl_x, hotspot.pxl_y);
                 displayHotspots(sprite, hotspot);
+            }
+        } else {
+            //17045/11568
+            if (tile_x == 17045 && tile_y == 11568){
+            ESP_LOGI("loadHotspots", "Invalid Hotspot dat:  %s", thermal_file_path);
             }
         }
     }
