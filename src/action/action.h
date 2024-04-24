@@ -20,6 +20,11 @@ void determineAction()
         ESP_LOGI("Button", "Recenter Map.");
         gps_mode = true;
     }
+    if (M5.BtnC.wasPressed())
+    {
+        ESP_LOGI("Button", "Hikingpath.");
+        hike_mode = !hike_mode;
+    }
 
     checkTouchMoveEvent();
 }

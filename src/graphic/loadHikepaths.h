@@ -1,5 +1,5 @@
-#ifndef LOADTILES_H
-#define LOADTILES_H
+#ifndef LOADHIKEPATHS_H
+#define LOADHIKEPATHS_H
 
 // Include any necessary libraries or headers here
 #include "SD.h"
@@ -9,6 +9,6 @@
 extern SemaphoreHandle_t semDrawScreen;
 
 // Declare your class or function prototypes here
-void loadTile(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y);
+void loadHikepaths(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y);
 
-#endif // LOADTILES_H
+#endif // LOADHIKEPATHS_H

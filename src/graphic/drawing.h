@@ -18,5 +18,6 @@ void initDirectionIcon();
 void pushDirIcon();
 
 void drawVarioInfo();
+void drawHikeMode();
 
 #endif // DRAWING_H

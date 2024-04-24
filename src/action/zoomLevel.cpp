@@ -15,7 +15,7 @@ void changeZoomLevel()
   ESP_LOGD("Zoom Level", "Zoom level changed from %d to %d. ", zoom_prev, zoom);
 
   // Update curr_gps_idx_coords for the new zoom level
-  if (gpsActive)
+  if (gps_active)
   {
     calcCoordsToCoordsPxl(curr_gps_pxl_coords, gps_data.longitude,
                          gps_data.latitude, zoom, tile_size);

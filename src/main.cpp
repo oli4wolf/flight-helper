@@ -70,6 +70,7 @@ void drawMap()
     drawGPSInfo(); // Added to refresh the GPS Info with the tiles.
     pushDirIcon();
     drawVarioInfo();
+    drawHikeMode();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {

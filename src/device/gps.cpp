@@ -8,8 +8,8 @@ static const char *TAG = "gps_demo";
 
 // Variables [GPS]
 gps_data_t gps_data = {0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0}; // Global GPS Data.
-bool gpsActive = false;
-bool gpsValid = false;
+bool gps_active = false;
+bool gps_valid = false;
 bool gps_mode = true;
 
 int tile_size = 256;
@@ -49,7 +49,7 @@ void gpsDebugCoords()
 // Enter Debugmode if no GPS Signal is received and activated.
 #ifdef __gpsdebug__
     drawCount = drawCount + 1;
-    if (gpsActive == false && (drawCount % drawAllXSeconds == 0))
+    if (gps_active == false && (drawCount % drawAllXSeconds == 0))
     {
       // Update curr_gps_idx_coords with gps data
 
@@ -75,7 +75,7 @@ void gpsDebugCoords()
  */
 void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
-  if (gps_mode == false)
+  if (gps_mode == true)
   { // refactor to be easier to read.
     gps_t *gps = NULL;
     switch (event_id)
@@ -99,8 +99,8 @@ void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int
         gps_data.longitude = gps->longitude; // GPS Longitude measurement.
         gps_data.altitude = gps->altitude;
 
-        gpsActive = true; // GPS is active.
-        gpsValid = true;  // GPS is valid (not older than n-Seconds).
+        gps_active = true; // GPS is active.
+        gps_valid = true;  // GPS is valid (not older than n-Seconds).
 
         if (!isTimeSet)
         {
