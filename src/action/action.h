@@ -7,7 +7,6 @@
 
 void determineAction()
 {
-    ESP_LOGD("Action", "determineAction");
     // Commands
     M5.update();
     if (M5.BtnA.wasPressed())
