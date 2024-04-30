@@ -101,21 +101,22 @@ void drawInfoAndMode()
     {
         lcd.startWrite();
         canvas.setTextSize(2);
+
         if (hike_mode)
         {
             canvas.setCursor(0, 0);
             canvas.setTextColor(TFT_YELLOW);
             canvas.printf("Hike");
         }
+        canvas.setCursor(160, 0);
+        canvas.setTextColor(TFT_BLACK);
+        canvas.printf("%d", zoom);
         if (gps_mode)
         {
             canvas.setCursor(280, 0);
             canvas.setTextColor(TFT_BLACK);
             canvas.printf("GPS");
         }
-        canvas.setCursor(160, 0);
-        canvas.setTextColor(TFT_BLACK);
-        canvas.printf("%d", zoom);
         canvas.pushSprite(0, 0); // needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);
