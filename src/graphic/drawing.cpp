@@ -37,7 +37,6 @@ void drawGPSInfo()
     {
         uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
         uint32_t gps_time = gps_data.hours * 3600000 + gps_data.minutes * 60000 + gps_data.seconds * 1000;
-        ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
         lcd.startWrite();
         canvas.setTextSize(2);
         if ((rtc_millis - gps_time) > 8000)
