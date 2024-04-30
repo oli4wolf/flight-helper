@@ -51,7 +51,7 @@ void startupScreen()
     lcd.fillScreen(TFT_BLACK);
     lcd.setCursor(0, 0);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-    lcd.setTextSize(2);
+    lcd.setTextSize(1);
     lcd.println("M5Stack Swiss Topo");
     lcd.println("v0.1");
     lcd.println("by @oli4wolf on github");
@@ -70,7 +70,7 @@ void drawMap()
     drawGPSInfo(); // Added to refresh the GPS Info with the tiles.
     pushDirIcon();
     drawVarioInfo();
-    drawHikeMode();
+    drawInfoAndMode();
 
     if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
@@ -125,7 +125,7 @@ void setup()
     initTileCache();
 
     // Load the cache with the tiles.
-    fillTileCache(46.95234, 7.45282);
+    fillTileCache(46.93979, 7.43599);
 
     drawTileCache(tile_cache, curr_gps_pxl_coords);
 
@@ -148,6 +148,6 @@ void loop()
     }
     else
     {
-        delay(50);
+        //delay(50);
     }
 }

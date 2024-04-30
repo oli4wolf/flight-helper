@@ -7,7 +7,6 @@
 
 void determineAction()
 {
-    ESP_LOGD("Action", "determineAction");
     // Commands
     M5.update();
     if (M5.BtnA.wasPressed())
@@ -24,6 +23,8 @@ void determineAction()
     {
         ESP_LOGI("Button", "Hikingpath.");
         hike_mode = !hike_mode;
+        invalidateTileCache();
+        reloadTileCache();
     }
 
     checkTouchMoveEvent();

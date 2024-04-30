@@ -1,8 +1,8 @@
 #ifndef ZOOMLEVEL_H
 #define ZOOMLEVEL_H
 
-#define MAX_ZOOM 18
-#define MIN_ZOOM 14
+#define MIN_ZOOM 13
+#define MAX_ZOOM 15
 
 // Include any necessary headers here
 #include "globalVariables.h"

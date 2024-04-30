@@ -23,6 +23,7 @@ void initCanvas();
 void initTileCache();
 void fillTileCache(double lat, double lon);
 void reloadTileCache();
+void invalidateTileCache();
 
 void drawTileCache(sprite_struct *tile_cache[], str_pxl_coords &idx_coords);
 

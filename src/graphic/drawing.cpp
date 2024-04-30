@@ -37,10 +37,9 @@ void drawGPSInfo()
     {
         uint32_t rtc_millis = M5.Rtc.getTime().hours * 3600000 + M5.Rtc.getTime().minutes * 60000 + M5.Rtc.getTime().seconds * 1000;
         uint32_t gps_time = gps_data.hours * 3600000 + gps_data.minutes * 60000 + gps_data.seconds * 1000;
-        ESP_LOGD("loop", "rtc_millis: %d, gps_millis: %d", rtc_millis, gps_time);
         lcd.startWrite();
         canvas.setTextSize(2);
-        if ((rtc_millis - gps_time) > 5000)
+        if ((rtc_millis - gps_time) > 8000)
         {
             canvas.setTextColor(TFT_RED, TFT_BLACK);
             gps_valid = false;
@@ -95,25 +94,35 @@ void drawVarioInfo()
     }
 }
 
-void drawHikeMode()
+void drawInfoAndMode()
 {
-    if (hike_mode)
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
-        if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+        lcd.startWrite();
+        canvas.setTextSize(2);
+
+        if (hike_mode)
         {
-            lcd.startWrite();
-            canvas.setTextSize(2);
             canvas.setCursor(0, 0);
             canvas.setTextColor(TFT_YELLOW);
             canvas.printf("Hike");
-            canvas.pushSprite(0, 0); // needed to display the text.
-            lcd.endWrite();
-            xSemaphoreGive(semDrawScreen);
         }
-        else
+        canvas.setCursor(160, 0);
+        canvas.setTextColor(TFT_BLACK);
+        canvas.printf("%d", zoom);
+        if (gps_mode)
         {
-            ESP_LOGI("drawHikeMode", "Could not take semaphore for Drawing.");
+            canvas.setCursor(280, 0);
+            canvas.setTextColor(TFT_BLACK);
+            canvas.printf("GPS");
         }
+        canvas.pushSprite(0, 0); // needed to display the text.
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
+    }
+    else
+    {
+        ESP_LOGI("drawInfoAndMode", "Could not take semaphore for Drawing.");
     }
 }
 
