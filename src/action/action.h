@@ -7,7 +7,6 @@
 
 void determineAction()
 {
-    ESP_LOGD("Action", "determineAction");
     // Commands
     M5.update();
     if (M5.BtnA.wasPressed())
@@ -49,6 +48,8 @@ void determineAction()
             hike_mode = true;
             bike_mode = false;
         }
+        invalidateTileCache();
+        reloadTileCache();
     }
 
     checkTouchMoveEvent();

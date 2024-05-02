@@ -70,6 +70,16 @@ bool isSameCenter(int center_tile_x, int center_tile_y)
     return false;
 }
 
+void invalidateTileCache()
+{
+    for (int i = 0; i < n_sprite; i++)
+    {
+        tile_cache[i]->zoom = -1;
+        tile_cache[i]->tile_x = -1;
+        tile_cache[i]->tile_y = -1;
+    }
+}
+
 void reloadTileCache()
 {
     str_tile_coords tile_coords;

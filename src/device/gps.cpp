@@ -102,7 +102,8 @@ void gps_event_handler(void *event_handler_arg, esp_event_base_t event_base, int
         gps_active = true; // GPS is active.
         gps_valid = true;  // GPS is valid (not older than n-Seconds).
 
-        if (!isTimeSet)
+        if (isTimeSet == false ||
+            (gps->tim.hour > M5.Rtc.getTime().hours && gps->tim.minute > M5.Rtc.getTime().minutes && gps->tim.second > M5.Rtc.getTime().seconds))
         {
           M5.Rtc.setDateTime({{gps->date.year, gps->date.month, gps->date.day},
                               {gps->tim.hour, gps->tim.minute, gps->tim.second}});
