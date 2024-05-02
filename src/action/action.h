@@ -22,8 +22,33 @@ void determineAction()
     }
     if (M5.BtnC.wasPressed())
     {
-        ESP_LOGI("Button", "Hikingpath.");
+        ESP_LOGI("Button", "Hikingpath or Bikepath.");
         hike_mode = !hike_mode;
+        bike_mode = !bike_mode;
+        if (hike_mode && bike_mode)
+        {
+            // Turn both modes off.
+            hike_mode = false;
+            bike_mode = false;
+        }
+        else if (hike_mode)
+        {
+            // Turn hike off and engage bike.
+            hike_mode = false;
+            bike_mode = true;
+        }
+        else if (bike_mode)
+        {
+           // Turn both modes off.
+            hike_mode = true;
+            bike_mode = true;
+        }
+        else
+        {
+            // Turn both modes off.
+            hike_mode = true;
+            bike_mode = false;
+        }
     }
 
     checkTouchMoveEvent();

@@ -15,6 +15,7 @@ extern str_pxl_coords curr_gps_pxl_coords;
 extern str_pxl_coords last_drawn_pxl_coords;
 
 extern bool hike_mode;
+extern bool bike_mode;
 
 // GPS variables
 extern TaskHandle_t Task_GPS_read;
