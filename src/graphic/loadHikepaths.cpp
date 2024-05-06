@@ -2,7 +2,7 @@
 
 char file_path_hike[39];
 const char map_dir_path_hike[] = "/hike";
-bool hike_mode = true;
+bool hike_mode = false;
 
 void loadHikepaths(LGFX_Sprite *sprite, int zoom, int tile_x, int tile_y)
 {

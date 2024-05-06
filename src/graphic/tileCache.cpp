@@ -123,6 +123,10 @@ void reloadTileCache()
                         {
                             loadHikepaths(tile_cache[i]->sprite, zoom, tile_x, tile_y);
                         }
+                        if(bike_mode)
+                        {
+                            loadBikepaths(tile_cache[i]->sprite, zoom, tile_x, tile_y);
+                        }
                     }
                 }
             }

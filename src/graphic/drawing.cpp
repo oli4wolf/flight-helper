@@ -100,12 +100,24 @@ void drawInfoAndMode()
     {
         lcd.startWrite();
         canvas.setTextSize(2);
-
-        if (hike_mode)
+        if (bike_mode || hike_mode)
         {
             canvas.setCursor(0, 0);
-            canvas.setTextColor(TFT_YELLOW);
-            canvas.printf("Hike");
+            if (hike_mode && bike_mode)
+            {
+                canvas.setTextColor(TFT_RED);
+                canvas.printf("Hike & Bike");
+            }
+            else if (hike_mode)
+            {
+                canvas.setTextColor(TFT_YELLOW);
+                canvas.printf("Hike");
+            }
+            else if (bike_mode)
+            {
+                canvas.setTextColor(TFT_BLUE);
+                canvas.printf("Bike");
+            }
         }
         canvas.setCursor(160, 0);
         canvas.setTextColor(TFT_BLACK);
