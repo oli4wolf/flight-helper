@@ -94,25 +94,47 @@ void drawVarioInfo()
     }
 }
 
-void drawHikeMode()
+void drawInfoAndMode()
 {
-    if (hike_mode)
+    if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
     {
-        if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
+        lcd.startWrite();
+        canvas.setTextSize(2);
+        if (bike_mode || hike_mode)
         {
-            lcd.startWrite();
-            canvas.setTextSize(2);
             canvas.setCursor(0, 0);
-            canvas.setTextColor(TFT_YELLOW);
-            canvas.printf("Hike");
-            canvas.pushSprite(0, 0); // needed to display the text.
-            lcd.endWrite();
-            xSemaphoreGive(semDrawScreen);
+            if (hike_mode && bike_mode)
+            {
+                canvas.setTextColor(TFT_RED);
+                canvas.printf("Hike & Bike");
+            }
+            else if (hike_mode)
+            {
+                canvas.setTextColor(TFT_YELLOW);
+                canvas.printf("Hike");
+            }
+            else if (bike_mode)
+            {
+                canvas.setTextColor(TFT_BLUE);
+                canvas.printf("Bike");
+            }
         }
-        else
+        canvas.setCursor(160, 0);
+        canvas.setTextColor(TFT_BLACK);
+        canvas.printf("%d", zoom);
+        if (gps_mode)
         {
-            ESP_LOGI("drawHikeMode", "Could not take semaphore for Drawing.");
+            canvas.setCursor(280, 0);
+            canvas.setTextColor(TFT_BLACK);
+            canvas.printf("GPS");
         }
+        canvas.pushSprite(0, 0); // needed to display the text.
+        lcd.endWrite();
+        xSemaphoreGive(semDrawScreen);
+    }
+    else
+    {
+        ESP_LOGI("drawInfoAndMode", "Could not take semaphore for Drawing.");
     }
 }
 

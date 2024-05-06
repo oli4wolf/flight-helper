@@ -22,8 +22,6 @@ void determineAction()
     if (M5.BtnC.wasPressed())
     {
         ESP_LOGI("Button", "Hikingpath or Bikepath.");
-        hike_mode = !hike_mode;
-        bike_mode = !bike_mode;
         if (hike_mode && bike_mode)
         {
             // Turn both modes off.
