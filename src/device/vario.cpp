@@ -18,7 +18,7 @@ int average_altitude = 0;
 void varioReadoutLoop(void *pvParameters)
 {
     last_pressure_reading = barometricSensor.getPressure(); // Initialize it to not be 0.0
-    while (gps_mode == true) // Debug if that deactivates the load for the vario to increase the performance.
+    while (gps_mode == true)                                // Debug if that deactivates the load for the vario to increase the performance.
     {
         float pressure = barometricSensor.getPressure();
 
@@ -70,25 +70,9 @@ void varioAverageLoop(void *pvParameters)
         if (abs(climb_cms) > 30)
         {
             double sink_ms = (climb_cms * 2.0) / 100.0;
-            for (int i = 0; i < 12; i++)
-            {
-                if (climb[i] > sink_ms)
-                {
-                    if (sink_ms < 0.0)
-                    {
-                        ESP_LOGI("Climb", "Climb average and climb: %d, %d", average_altitude, climb_cms);
-                    }
-                    else
-                    {
-                        ESP_LOGI("Climb", "Climb average and climb: %d, %d", average_altitude, climb_cms);
-                    }
-                    ESP_LOGD("Climb", "Sink_ms: %f, frequency: %d, duration: %d, duty: %d, duration*duty: %f",
-                             sink_ms, frequency[i], duration[i], duty[i], (duty[i] * (duration[i])));
-                    // tone(26, frequency[i], duration[i]);
-                    // vTaskDelay(duty[i] * (duration[i]));
-                    break;
-                }
-            }
+#ifdef __sound__
+            playToneByClimb(sink_ms);
+#endif
         }
         else
         {
