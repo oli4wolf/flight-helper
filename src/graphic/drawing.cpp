@@ -67,12 +67,12 @@ void drawVarioInfo()
     {
         lcd.startWrite();
         canvas.setTextSize(2);
-        if ((climb_cms) > 50)
+        if ((climb_cms) > 300)
         {
             canvas.setTextColor(TFT_GREEN, TFT_BLACK);
             gps_valid = false;
         }
-        else if ((climb_cms) < -50)
+        else if ((climb_cms) < -300)
         {
             canvas.setTextColor(TFT_RED, TFT_BLACK);
             gps_valid = false;
@@ -83,7 +83,7 @@ void drawVarioInfo()
             gps_valid = true;
         }
         canvas.setCursor(0, 225);
-        canvas.printf("Climb: %d", climb_cms);
+        canvas.printf("Climb: %d", climb_cms/100);
         canvas.pushSprite(0, 0); // needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);

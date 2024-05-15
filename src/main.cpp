@@ -106,9 +106,9 @@ void setup()
 // Initialize Pressure Sensor
 #ifdef __vario__
     initVario();
-    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    // Initialize Vario Readout Task reading the pressure out (this time scheduled task.)
     initVarioReadoutTask();
-    // Initialize Vario Task reading the pressure out (this time scheduled task.)
+    // Initialize Vario Average Task reading the pressure out (this time scheduled task.)
     initVarioAverageTask();
 #endif
 

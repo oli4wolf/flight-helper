@@ -31,7 +31,7 @@ void initClockTask(){
       0);               /* pin task to core 1 */
 }
 
-// Vario Task as Scheduled task.
+// Vario Readout Task as Scheduled task.
 void initVarioReadoutTask(){
     xTaskCreatePinnedToCore(
       varioReadoutLoop, /* Task function. */
@@ -43,7 +43,7 @@ void initVarioReadoutTask(){
       0);               /* pin task to core 1 */
 }
 
-// Vario Task as Scheduled task.
+// Vario Calculate Task as Scheduled task.
 void initVarioAverageTask(){
     xTaskCreatePinnedToCore(
       varioAverageLoop, /* Task function. */

@@ -6,9 +6,9 @@
 #include "graphic/drawing.h"
 #include "action/tone.h"
 
-#define CLIMB_SAMPLES_PER_SEC		25	
-#define CLIMB_AVG_SEC			1
-#define CLIMB_SAMPLES			38
+#define CLIMB_SAMPLES_PER_SEC		50	
+#define CLIMB_AVG_SEC			0.5
+#define CLIMB_SAMPLES			25 // 25 samples per half second. Average trigger all 0.5 seconds.
 #define LR_x_cross 			(CLIMB_SAMPLES>>1)
 #define LR_n				((int32_t)CLIMB_SAMPLES)
 #define LR_x				((int32_t)LR_x_cross)

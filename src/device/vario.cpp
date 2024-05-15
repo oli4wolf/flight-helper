@@ -67,19 +67,15 @@ void varioAverageLoop(void *pvParameters)
         climb_cms = climb_update();
         // Climb
         // Precision of the MS5637 is about 13cm.
-        if (abs(climb_cms) > 30)
+        if (abs(climb_cms) > 500)
         {
             double sink_ms = (climb_cms * 2.0) / 100.0;
 #ifdef __sound__
             playToneByClimb(sink_ms);
 #endif
         }
-        else
-        {
-            ESP_LOGI("Climb", "Climb average and climb: %f, %f", average_altitude, climb_cms);
-            drawVarioInfo();
-            vTaskDelay(500);
-        }
+        drawVarioInfo();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }
 
