@@ -24,7 +24,7 @@ void logger(char *csv, const char *filePath)
   }
 }
 
-void logClimbAltMS(float pressure, int32_t altCM)
+void logClimbAltMS(float pressure)
 {
   if (xSemaphoreTake(semDrawScreen, (TickType_t)10) == pdTRUE)
   {

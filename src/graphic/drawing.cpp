@@ -83,7 +83,7 @@ void drawVarioInfo()
             gps_valid = true;
         }
         canvas.setCursor(0, 225);
-        canvas.printf("Climb: %d", climb_cms);
+        canvas.printf("Climb: %.1f", ((float)climb_cms/100.0));
         canvas.pushSprite(0, 0); // needed to display the text.
         lcd.endWrite();
         xSemaphoreGive(semDrawScreen);

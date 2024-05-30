@@ -14,3 +14,8 @@ Accessing SD-Card should have a higher priority (portMAX_DELAY block everything 
 https://github.com/oli4wolf/flight-helper/tree/main/media/2024-03-24.mp4</br>
 Still not correct is the Vario.</br>
 Next Features: Zoom, Scrolling, Hike Paths?
+
+## Inspiration ##
+https://github.com/Oganisyan/Variometer-LilyGoEPD47
+https://github.com/akchan/cycle_navi
+    
